@@ -22,8 +22,7 @@ public class FramePrincipal
     
     private void localInit() { 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationByPlatform(true);
-        this.setLocationRelativeTo(null);
+        //this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
     

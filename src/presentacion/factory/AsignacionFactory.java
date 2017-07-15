@@ -8,41 +8,34 @@
  */
 package presentacion.factory;
 
-import presentacion.controlador.Controlador;
 import presentacion.controlador.ControladorHijo;
-import presentacion.controlador.ControladorAsignacion;
-import presentacion.controlador.ControladorAsignacionNuevo;
-import presentacion.vista.panel.PanelAsignacion;
-import presentacion.vista.panel.PanelAsignacionNueva;
+import presentacion.controlador.ControladorPadre;
 import presentacion.vista.VistaHija;
 import presentacion.vista.VistaPadre;
-import presentacion.vista.panel.PanelFactory;
 
 /**
  *
  * @author marces
  */
-public class AsignacionFactory implements AbstractFactoryCompleta{
-    
-    PanelFactory factory = new PanelFactory();
+public class AsignacionFactory extends AbstractFactory{
     
     @Override
     public VistaPadre crearVista() {
-        return factory.crearPanelAsignacion();
+        return panelFactory.crearPanelAsignacion();
     }
 
     @Override
-    public Controlador crearControlador() {
-        return new ControladorAsignacion();
+    public ControladorPadre crearControlador() {
+        return controladorFactory.crearControladorAsignacion();
     }
 
     @Override
     public VistaHija crearVistaHija() {
-        return factory.crearPanelAsignacionNueva();
+        return panelFactory.crearPanelAsignacionNueva();
     }
 
     @Override
     public ControladorHijo crearControladorHijo() {
-        return new ControladorAsignacionNuevo();
+        return controladorFactory.crearControladorAsignacionNueva();
     }
 }

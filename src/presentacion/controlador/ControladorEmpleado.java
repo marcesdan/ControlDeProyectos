@@ -10,16 +10,16 @@ import presentacion.vista.Main;
 import presentacion.vista.Vista;
 import presentacion.vista.VistaHija;
 import presentacion.vista.VistaPadre;
-import presentacion.factory.AbstractFactoryCompleta;
 import presentacion.modelo.ATableModel;
 import static presentacion.vista.info.InfoEmpleado.crearInfoEmpleado;
 import dao.EmpleadoDao;
+import presentacion.factory.AbstractFactory;
 
 /**
  *
  * @author marces
  */
-public class ControladorEmpleado implements Controlador {
+public class ControladorEmpleado implements ControladorPadre {
     
     private VistaPadre vistaPadre;
     private VistaHija vistaHija;
@@ -30,13 +30,15 @@ public class ControladorEmpleado implements Controlador {
         this.vistaPadre = (VistaPadre) vista;
     }
    
-    public void nuevoEmpleado() {
+    @Override
+    public void nuevo() {
         cargar();
         Main.getInstance().mostrarPanelEnDialog(vistaHija, ""
                     + "Nuevo empleado");
     }
     
-    public void modificarEmpleado(ATableModel model, int fila) {
+    @Override
+    public void modificar(ATableModel model, int fila) {
         
         // Si se se seleccionó una fila...
         if (fila != -1 ) {
@@ -71,7 +73,8 @@ public class ControladorEmpleado implements Controlador {
                 + "Primero debe seleccionar una fila de la tabla");
     }   
     
-    public void eliminarEmpleado(ATableModel model, int fila) {
+    @Override
+    public void eliminar(ATableModel model, int fila) {
         
         if (fila != -1 ) {
             
@@ -94,8 +97,7 @@ public class ControladorEmpleado implements Controlador {
     }
     
     private void cargar() {
-        
-        AbstractFactoryCompleta factory = new EmpleadoFactory();
+        AbstractFactory factory = new EmpleadoFactory();
         controladorHijo = factory.crearControladorHijo();
         vistaHija = factory.crearVistaHija();
         controladorHijo.setVista(vistaHija);

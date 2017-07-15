@@ -42,7 +42,6 @@ public class Main implements Runnable{
     public void mostrarPanelEnFrame(VistaPadre panel) {
         frame.setContentPane((JPanel) panel);
         frame.pack();
-        frame.setLocationRelativeTo(null);
     }
     
     /**

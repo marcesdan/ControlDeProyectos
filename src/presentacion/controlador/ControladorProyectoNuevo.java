@@ -5,18 +5,18 @@ package presentacion.controlador;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.isNull;
-import dominio.Proyecto;
-import dominio.DominioFactory;
-import dao.DaoFactory;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
+import java.time.LocalDate;
 import presentacion.vista.info.InfoProyecto;
 import presentacion.vista.Main;
 import presentacion.vista.Vista;
 import presentacion.vista.VistaHija;
 import presentacion.vista.VistaPadre;
+import presentacion.vista.info.Info;
+import dominio.Proyecto;
+import dominio.DominioFactory;
+import dao.DaoFactory;
 import dao.ProyectoDao;
-import java.time.LocalDate;
-import static java.util.Objects.isNull;
-import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 /**
  *
@@ -26,12 +26,11 @@ public class ControladorProyectoNuevo implements ControladorHijo {
 
     private VistaPadre vistaProyecto;
     private VistaHija vistaNuevoProyecto;
-    private ProyectoDao proyectoDao;
+    private final ProyectoDao proyectoDao;
     private Long id;
 
     public ControladorProyectoNuevo() {
-        DaoFactory factory = new DaoFactory();
-        proyectoDao = factory.crearProyectoDao();
+        proyectoDao = new DaoFactory().crearProyectoDao();
     }
 
     @Override
@@ -44,8 +43,11 @@ public class ControladorProyectoNuevo implements ControladorHijo {
         this.vistaProyecto = (VistaPadre) vista;
     }
 
-    public void guardarProyecto(InfoProyecto infoProyecto) {
-
+    @Override
+    public void crearNuevoRegistro(Info info) {
+        
+        InfoProyecto infoProyecto = (InfoProyecto) info;
+        
         try {
             
             id = infoProyecto.getId();

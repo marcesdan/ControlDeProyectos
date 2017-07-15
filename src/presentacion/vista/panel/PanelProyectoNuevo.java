@@ -264,7 +264,7 @@ public class PanelProyectoNuevo
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
       
-        controlador.guardarProyecto(crearInfoProyecto()
+        controlador.crearNuevoRegistro(crearInfoProyecto()
                 .withId(id)
                 .withDescripcion(txtDescripcion.getText())
                 .withPresupuesto(txtPresupuesto.getText())

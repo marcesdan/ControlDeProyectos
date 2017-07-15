@@ -10,25 +10,24 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static presentacion.vista.info.InfoAsignacion.crearInfoAsignacion;
 import dao.DaoFactory;
 import dominio.Empleado;
-import dominio.Proyecto;
 import dominio.Asignacion;
 import presentacion.vista.Main;
 import presentacion.vista.Vista;
 import presentacion.vista.VistaHija;
 import presentacion.vista.VistaPadre;
-import presentacion.factory.AbstractFactoryCompleta;
 import presentacion.factory.EmpleadoFactory;
 import presentacion.modelo.ATableModel;
 import static presentacion.vista.info.InfoEmpleado.crearInfoEmpleado;
 import dao.AsignacionDao;
 import presentacion.factory.AsignacionFactory;
 import dao.EmpleadoDao;
+import presentacion.factory.AbstractFactory;
 
 /**
  *
  * @author marces
  */
-public class ControladorAsignacion implements Controlador {
+public class ControladorAsignacion implements ControladorPadre {
 
     private VistaPadre vistaPadre;
     private VistaHija vistaHija;
@@ -50,7 +49,8 @@ public class ControladorAsignacion implements Controlador {
     //<editor-fold defaultstate="collapsed" desc="Alta">
     /** Crea una nueva asignacion. Si el empleado elegido no esta en la BD,
      * se lo registra, y ahí recién se crea la asignacion. */
-    public void nuevaAsignacion() {
+    @Override
+    public void nuevo() {
         
         // Mostramos una entrada de texto para que ingrese el DNI.
         String stDni = Main.getInstance()
@@ -117,7 +117,8 @@ public class ControladorAsignacion implements Controlador {
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Modificación">
-    public void modificarAsignacion(ATableModel model, int fila) {
+    @Override
+    public void modificar(ATableModel model, int fila) {
         // Si se se seleccionó una fila...
         if (fila != -1) {
             
@@ -146,10 +147,11 @@ public class ControladorAsignacion implements Controlador {
                 + "Primero debe seleccionar una fila de la tabla");
         
     }
-//</editor-fold>
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Baja">
-    public void eliminarAsignacion(ATableModel model, int fila) {
+    @Override
+    public void eliminar(ATableModel model, int fila) {
         
         if (fila != -1) {
             // Si el usuario confirma el borrado...
@@ -171,7 +173,7 @@ public class ControladorAsignacion implements Controlador {
 //</editor-fold>
     
     /** Se setean las vistas y los controladores mutuamente. */
-    private void cargar(AbstractFactoryCompleta factory) {
+    private void cargar(AbstractFactory factory) {
         controladorHijo = factory.crearControladorHijo();
         vistaHija = factory.crearVistaHija();
         controladorHijo.setVista(vistaHija);

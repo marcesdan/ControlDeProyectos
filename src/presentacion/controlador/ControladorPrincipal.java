@@ -8,8 +8,8 @@ import presentacion.factory.ProyectoFactory;
 import presentacion.vista.Main;
 import presentacion.vista.Vista;
 import presentacion.vista.VistaPadre;
-import presentacion.factory.AbstractFactoryCompleta;
 import presentacion.factory.AsignacionFactory;
+import presentacion.factory.AbstractFactory;
 
 /**
  * Clase encargada de controlar la vista principal donde se encuentra la barra
@@ -19,7 +19,7 @@ import presentacion.factory.AsignacionFactory;
  */
 public class ControladorPrincipal implements Controlador {
 
-    private AbstractFactoryCompleta factory;
+    private AbstractFactory factory;
     private Vista vistaPrincipal;
     private VistaPadre vistaPadre;
     private Controlador controlador;
@@ -53,7 +53,7 @@ public class ControladorPrincipal implements Controlador {
         cargar(factory);
     }
 
-    private void cargar(AbstractFactoryCompleta factory) {
+    private void cargar(AbstractFactory factory) {
         controlador = factory.crearControlador();
         vistaPadre = factory.crearVista();
         controlador.setVista(vistaPadre);

@@ -7,7 +7,6 @@ import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static com.google.common.base.Preconditions.checkArgument;
 import dominio.Empleado;
-import dominio.Direccion;
 import dominio.DominioFactory;
 import dao.DaoFactory;
 import presentacion.vista.info.InfoEmpleado;
@@ -16,6 +15,7 @@ import presentacion.vista.Vista;
 import presentacion.vista.VistaHija;
 import presentacion.vista.VistaPadre;
 import dao.EmpleadoDao;
+import presentacion.vista.info.Info;
 
 /**
  *
@@ -43,8 +43,11 @@ public class ControladorEmpleadoNuevo implements ControladorHijo {
         this.vistaEmpleado = (VistaPadre) vista;
     }
 
-    public void guardarEmpleado(InfoEmpleado infoEmpleado) {
-
+    @Override
+    public void crearNuevoRegistro(Info info) {
+        
+        InfoEmpleado infoEmpleado = (InfoEmpleado) info;
+        
         try {
             
             id = infoEmpleado.getId();

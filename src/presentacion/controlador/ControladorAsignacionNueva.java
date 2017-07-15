@@ -17,21 +17,21 @@ import dominio.Empleado;
 import dominio.Proyecto;
 import dominio.Asignacion;
 import dominio.DominioFactory;
+import presentacion.vista.info.Info;
 
 /**
  *
  * @author marces
  */
-public class ControladorAsignacionNuevo implements ControladorHijo {
+public class ControladorAsignacionNueva implements ControladorHijo {
 
     private VistaPadre vistaAsignacion;
     private VistaHija vistaNuevaAsignacion;
     private Long id;
     private final AsignacionDao asignacionDao;
 
-    public ControladorAsignacionNuevo() {
-        DaoFactory factory = new DaoFactory();
-        asignacionDao = factory.crearAsignacionDao();
+    public ControladorAsignacionNueva() {
+        asignacionDao = new DaoFactory().crearAsignacionDao();
     }
 
     @Override
@@ -44,11 +44,15 @@ public class ControladorAsignacionNuevo implements ControladorHijo {
         this.vistaAsignacion = (VistaPadre) vista;
     }
 
-    public void guardarAsignacion(InfoAsignacion infoAsignacion) {
-
+    @Override
+    public void crearNuevoRegistro(Info info) {
+        
+        InfoAsignacion infoAsignacion = (InfoAsignacion) info;
+        
         id = infoAsignacion.getId();
         
         // Se captura una excepcion de validación de campos
+        
         try {
         
             if (isNull(id)) {

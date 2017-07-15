@@ -10,16 +10,16 @@ import presentacion.vista.Main;
 import presentacion.vista.Vista;
 import presentacion.vista.VistaHija;
 import presentacion.vista.VistaPadre;
-import presentacion.factory.AbstractFactoryCompleta;
 import presentacion.modelo.ATableModel;
 import dao.ProyectoDao;
 import presentacion.factory.ProyectoFactory;
+import presentacion.factory.AbstractFactory;
 
 /**
  *
  * @author marces
  */
-public class ControladorProyecto implements Controlador {
+public class ControladorProyecto implements ControladorPadre {
     
     private VistaPadre vistaPadre;
     private VistaHija vistaHija;
@@ -30,13 +30,15 @@ public class ControladorProyecto implements Controlador {
         this.vistaPadre = (VistaPadre) vista;
     }
     
-    public void nuevoProyecto() {
+    @Override
+    public void nuevo() {
         cargar();
         Main.getInstance().mostrarPanelEnDialog(vistaHija, ""
                     + "Nuevo proyecto");
     }
     
-    public void modificarProyecto(ATableModel model, int fila) {
+    @Override
+    public void modificar(ATableModel model, int fila) {
         
         // Si se se seleccionó una fila...
         if (fila != -1 ) {
@@ -66,7 +68,8 @@ public class ControladorProyecto implements Controlador {
                 + "Primero debe seleccionar una fila de la tabla");
     }   
     
-    public void eliminarProyecto(ATableModel model, int fila) {
+    @Override
+    public void eliminar(ATableModel model, int fila) {
         
         if (fila != -1 ) {
             
@@ -90,7 +93,7 @@ public class ControladorProyecto implements Controlador {
     
     private void cargar() {
         
-        AbstractFactoryCompleta factory = new ProyectoFactory();
+        AbstractFactory factory = new ProyectoFactory();
         controladorHijo = factory.crearControladorHijo();
         vistaHija = factory.crearVistaHija();
         controladorHijo.setVista(vistaHija);

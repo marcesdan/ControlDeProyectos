@@ -11,7 +11,7 @@ import presentacion.vista.info.InfoAsignacion;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import presentacion.controlador.Controlador;
-import presentacion.controlador.ControladorAsignacionNuevo;
+import presentacion.controlador.ControladorAsignacionNueva;
 import presentacion.vista.Main;
 import presentacion.vista.VistaHija;
 
@@ -22,7 +22,7 @@ import presentacion.vista.VistaHija;
 public class PanelAsignacionNueva 
         extends javax.swing.JPanel implements VistaHija {
 
-    private ControladorAsignacionNuevo controlador;
+    private ControladorAsignacionNueva controlador;
     private Long id = null;
     private InfoAsignacion info;
 
@@ -242,7 +242,7 @@ public class PanelAsignacionNueva
     // <editor-fold defaultstate="collapsed" desc="Nuestro código">   
     @Override
     public void setControlador(Controlador controlador) {
-        this.controlador = (ControladorAsignacionNuevo) controlador;
+        this.controlador = (ControladorAsignacionNueva) controlador;
     }
 
     @Override
@@ -278,7 +278,7 @@ public class PanelAsignacionNueva
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-        controlador.guardarAsignacion(
+        controlador.crearNuevoRegistro(
                 info.withProyecto(comboBoxProyecto.getModel().getSelectedItem()));
     }//GEN-LAST:event_btnGuardarActionPerformed
 

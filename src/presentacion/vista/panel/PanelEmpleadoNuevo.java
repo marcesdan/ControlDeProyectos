@@ -291,7 +291,7 @@ public class PanelEmpleadoNuevo
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
  
-        controlador.guardarEmpleado(crearInfoEmpleado()
+        controlador.crearNuevoRegistro(crearInfoEmpleado()
                 .withId(id)
                 .withApellido(txtApellido.getText())
                 .withNombre(txtNombre.getText())
