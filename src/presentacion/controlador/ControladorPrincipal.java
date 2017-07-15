@@ -1,5 +1,9 @@
 /*
- * UNTDF - Laboratorio de programación y lenguajes (2017)
+ * Alumno: Mariano César D'Angelo.
+ * Título: Trabajo Práctico Integrador: Control De Proyectos.
+ * Asignatura: Programación y Diseño Orientada a Objetos (2017).
+ * Universidad Nacional de Tierra del Fuego (UNTDF).
+ *
  */
 package presentacion.controlador;
 
@@ -53,6 +57,9 @@ public class ControladorPrincipal implements Controlador {
         cargar(factory);
     }
 
+    /** 
+     * Se setean las vistas y los controladores mutuamente. 
+     */
     private void cargar(AbstractFactory factory) {
         controlador = factory.crearControlador();
         vistaPadre = factory.crearVista();

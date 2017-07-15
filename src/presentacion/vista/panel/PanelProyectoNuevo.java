@@ -1,16 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Alumno: Mariano César D'Angelo.
+ * Título: Trabajo Práctico Integrador: Control De Proyectos.
+ * Asignatura: Programación y Diseño Orientada a Objetos (2017).
+ * Universidad Nacional de Tierra del Fuego (UNTDF).
+ *
  */
 package presentacion.vista.panel;
 import presentacion.vista.info.InfoProyecto;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import presentacion.controlador.Controlador;
-import presentacion.controlador.ControladorProyectoNuevo;
+import presentacion.controlador.ControladorHijo;
 import presentacion.vista.Main;
 import presentacion.vista.VistaHija;
 import static presentacion.vista.info.InfoProyecto.crearInfoProyecto;
@@ -23,7 +23,7 @@ public class PanelProyectoNuevo
         extends javax.swing.JPanel
         implements VistaHija {
 
-    private ControladorProyectoNuevo controlador;
+    private ControladorHijo controlador;
     private Long id = null;
 
     /**
@@ -220,7 +220,7 @@ public class PanelProyectoNuevo
     // <editor-fold defaultstate="collapsed" desc="Nuestro código">   
     @Override
     public void setControlador(Controlador controlador) {
-        this.controlador = (ControladorProyectoNuevo) controlador;
+        this.controlador = (ControladorHijo) controlador;
     }
 
     @Override

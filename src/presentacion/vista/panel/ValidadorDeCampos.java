@@ -1,5 +1,9 @@
 /*
- * UNTDF - Laboratorio de programación y lenguajes (2017)
+ * Alumno: Mariano César D'Angelo.
+ * Título: Trabajo Práctico Integrador: Control De Proyectos.
+ * Asignatura: Programación y Diseño Orientada a Objetos (2017).
+ * Universidad Nacional de Tierra del Fuego (UNTDF).
+ *
  */
 package presentacion.vista.panel;
 
@@ -17,7 +21,7 @@ import javax.swing.event.DocumentListener;
 public class ValidadorDeCampos implements DocumentListener {
     
     // Mantiene los campos de texto a validar.
-    private List<JTextField> monitorDeCampos;
+    private final List<JTextField> monitorDeCampos;
     
     // Mantiene el botón que queremos habilitar/deshabilitar.
     private JButton boton;

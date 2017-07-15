@@ -1,14 +1,15 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Alumno: Mariano César D'Angelo.
+ * Título: Trabajo Práctico Integrador: Control De Proyectos.
+ * Asignatura: Programación y Diseño Orientada a Objetos (2017).
+ * Universidad Nacional de Tierra del Fuego (UNTDF).
+ *
  */
 package presentacion.vista.panel;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import presentacion.controlador.Controlador;
-import presentacion.controlador.ControladorAsignacion;
 import presentacion.controlador.ControladorPadre;
 import presentacion.modelo.ATableModel;
 import presentacion.modelo.AsignacionTableModel;

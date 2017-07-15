@@ -1,14 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Alumno: Mariano César D'Angelo.
+ * Título: Trabajo Práctico Integrador: Control De Proyectos.
+ * Asignatura: Programación y Diseño Orientada a Objetos (2017).
+ * Universidad Nacional de Tierra del Fuego (UNTDF).
+ *
  */
 package presentacion.vista.panel;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import presentacion.controlador.Controlador;
-import presentacion.controlador.ControladorEmpleado;
+import presentacion.controlador.ControladorPadre;
 import presentacion.modelo.ATableModel;
 import presentacion.modelo.EmpleadoTableModel;
 import presentacion.vista.VistaPadre;
@@ -21,7 +23,7 @@ public class PanelEmpleado
         extends javax.swing.JPanel
         implements VistaPadre {
 
-    private ControladorEmpleado controlador;
+    private ControladorPadre controlador;
     
     public PanelEmpleado() {
         initComponents();
@@ -124,7 +126,7 @@ public class PanelEmpleado
     //<editor-fold defaultstate="collapsed" desc="Nuestro código">
     @Override
     public void setControlador(Controlador controlador) {
-        this.controlador = (ControladorEmpleado) controlador;
+        this.controlador = (ControladorPadre) controlador;
     }
 
     @Override

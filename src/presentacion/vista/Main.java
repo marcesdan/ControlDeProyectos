@@ -1,9 +1,17 @@
+/*
+ * Alumno: Mariano César D'Angelo.
+ * Título: Trabajo Práctico Integrador: Control De Proyectos.
+ * Asignatura: Programación y Diseño Orientada a Objetos (2017).
+ * Universidad Nacional de Tierra del Fuego (UNTDF).
+ *
+ */
 package presentacion.vista;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import presentacion.controlador.ControladorFactory;
 import presentacion.controlador.ControladorPrincipal;
 
 /**
@@ -97,15 +105,14 @@ public class Main implements Runnable{
         //</editor-fold>
         
         // Llamamos a los new
-        ControladorPrincipal controlador = new ControladorPrincipal();
-        Vista vista = new FramePrincipal();
+        ControladorPrincipal controlador = 
+                new ControladorFactory().crearControladorPrincipal();
+        frame = new FramePrincipal(); 
+        Vista vista = (Vista) frame;
         
         // Seteamos las referencias mutuamente
-        controlador.setVista(vista);
+        controlador.setVista((Vista) frame);
         vista.setControlador(controlador);
-        
-        // Necesitamos que el dato miembro frame sea un JFrame, no una vista.
-        frame = (JFrame) vista;
         
         // El panel con el que arrancamos.
         controlador.mostrarProyectos();

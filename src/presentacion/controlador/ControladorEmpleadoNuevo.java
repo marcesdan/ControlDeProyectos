@@ -1,5 +1,9 @@
 /*
- * UNTDF - Laboratorio de programación y lenguajes (2017)
+ * Alumno: Mariano César D'Angelo.
+ * Título: Trabajo Práctico Integrador: Control De Proyectos.
+ * Asignatura: Programación y Diseño Orientada a Objetos (2017).
+ * Universidad Nacional de Tierra del Fuego (UNTDF).
+ *
  */
 package presentacion.controlador;
 
@@ -25,7 +29,7 @@ public class ControladorEmpleadoNuevo implements ControladorHijo {
 
     private VistaPadre vistaEmpleado;
     private VistaHija vistaNuevoEmpleado;
-    private EmpleadoDao empleadoDao;
+    private final EmpleadoDao empleadoDao;
     private Long id;
 
     public ControladorEmpleadoNuevo() {
@@ -94,7 +98,8 @@ public class ControladorEmpleadoNuevo implements ControladorHijo {
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Validaciones ">
-    public String validarNombres(String value) throws IllegalArgumentException {
+    public String validarNombres(String value) 
+            throws IllegalArgumentException {
 
         // Reglas de validación
         checkArgument(value.matches("^[\\p{L} .'-]+$"),
@@ -103,7 +108,8 @@ public class ControladorEmpleadoNuevo implements ControladorHijo {
         return value;
     }
 
-    public Integer validarDocumento(String value) throws IllegalArgumentException {
+    public Integer validarDocumento(String value) 
+            throws IllegalArgumentException {
 
         // Reglas de validación
         checkArgument(isNumeric(value),
@@ -126,7 +132,7 @@ public class ControladorEmpleadoNuevo implements ControladorHijo {
             /* Si es null, entonces lo modifico por uno que no existe, pero si 
              * no es null y los IDs son distintos, el usuario modificó el 
              * documento por uno que ya existe en la BD. (short-circuit)*/
-            checkArgument(isNull(empleado) || empleado.getId() == id,
+            checkArgument(isNull(empleado) || id.equals(empleado.getId()),
                     "Ya existe un empleado con ese documento");
         }
 

@@ -1,3 +1,10 @@
+/*
+ * Alumno: Mariano César D'Angelo.
+ * Título: Trabajo Práctico Integrador: Control De Proyectos.
+ * Asignatura: Programación y Diseño Orientada a Objetos (2017).
+ * Universidad Nacional de Tierra del Fuego (UNTDF).
+ *
+ */
 package presentacion.vista;
 
 import javax.swing.JFrame;
@@ -22,7 +29,7 @@ public class FramePrincipal
     
     private void localInit() { 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.setLocationRelativeTo(null);
+        this.setLocationByPlatform(true);
         this.setVisible(true);
     }
     
