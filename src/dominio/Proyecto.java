@@ -35,12 +35,11 @@ public class Proyecto implements Serializable {
     private Date fechaInicio;
     private Date fechaEstimada;
     
-    @OneToMany(
-            mappedBy = "proyecto",
-            cascade = CascadeType.ALL)
-    private List<Asignacion> asignaciones = new ArrayList<Asignacion>();
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
+    private final List<Asignacion> asignaciones; 
     
     public Proyecto() {
+        asignaciones = new ArrayList<>();
     }  
     
     //<editor-fold defaultstate="collapsed" desc="Responsabilidades">

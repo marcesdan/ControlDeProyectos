@@ -42,12 +42,11 @@ public class Empleado implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     private Contacto contacto;
     
-    @OneToMany(
-            mappedBy = "empleado",
-            cascade = CascadeType.ALL)
-    private List<Asignacion> asignaciones = new ArrayList<Asignacion>();
+    @OneToMany(mappedBy = "empleado",cascade = CascadeType.ALL)    
+    private final List<Asignacion> asignaciones;
     
     public Empleado() {
+        asignaciones = new ArrayList<>();
         direccion = new Direccion();
         contacto = new Contacto();
     }
