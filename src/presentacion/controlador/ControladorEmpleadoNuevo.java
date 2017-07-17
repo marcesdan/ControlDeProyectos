@@ -33,8 +33,7 @@ public class ControladorEmpleadoNuevo implements ControladorHijo {
     private Long id;
 
     public ControladorEmpleadoNuevo() {
-        DaoFactory factory = new DaoFactory();
-        empleadoDao = factory.crearEmpleadoDao();
+        empleadoDao = new DaoFactory().crearEmpleadoDao();
     }
 
     @Override
@@ -48,87 +47,89 @@ public class ControladorEmpleadoNuevo implements ControladorHijo {
     }
 
     @Override
-    public void crearNuevoRegistro(Info info) {
-        
-        InfoEmpleado infoEmpleado = (InfoEmpleado) info;
-        
-        try {
-            
-            id = infoEmpleado.getId();
-            if (isNull(id)) {
-                
-                Empleado empleado = new DominioFactory().crearEmpleado();
-                setearDatos(infoEmpleado, empleado);   
-                
-                empleadoDao.create(empleado);
-                
-            } else {
-                
-                Empleado empleado = empleadoDao.read(infoEmpleado.getId());
-                setearDatos(infoEmpleado, empleado);
-                
-                empleadoDao.update(empleado);
-            }
+    public void guardarRegistro(Info info) {
 
-            vistaNuevoEmpleado.mostrarMensaje("Empleado guardado exitosamente");
-            vistaEmpleado.actualizar();
-            Main.getInstance().cerrarDialogAux();        
+        InfoEmpleado infoEmpleado = (InfoEmpleado) info;
+
+        // El id determina si es un alta o una modificación (Create o Update)
+        id = infoEmpleado.getId();
+        if (isNull(id)) { // Entonces se requiere crear un registro (Create)
+
+            // Nueva instancia de Empleado
+            Empleado empleado = new DominioFactory().crearEmpleado();
+            // Llamamos a los set de la clase Empleado. 
+            setearCampos(infoEmpleado, empleado);
+            // Persistimos en la BD el empleado.
+            empleadoDao.create(empleado);
+
+        } else { // De lo contrario se requiere modificar un registro (update)
+
+            // Buscamos la asignación por id y nos quedamos con la referencia.
+            Empleado empleado = empleadoDao.read(id);
+            // Llamamos a los set de la clase Empleado. 
+            setearCampos(infoEmpleado, empleado);
+            // Se modifica (persiste) en la BD el empleado (Update)
+            empleadoDao.update(empleado);
+        }
+        vistaNuevoEmpleado.mostrarMensaje("Empleado guardado exitosamente");
+        // Actualizamos el listado con el nuevo registro o su modificación.
+        vistaEmpleado.actualizar();
+        // Cerramos la vista hija.
+        Main.getInstance().cerrarDialogAux();
+    }
+
+    private void setearCampos(InfoEmpleado info, Empleado empleado) {
+        // Se captura una excepcion de validación de campos
+        try {
+            empleado.withApellido(validarNombres(info.getApellido()))
+                    .withNombre(validarNombres(info.getNombre()))
+                    .withDocumento(validarDocumento(info.getDocumento()))
+                    .withNacimiento(info.getNacimiento())
+                    .withCalle(info.getCalle())
+                    .withAltura(info.getAltura())
+                    .withBarrio(info.getBarrio())
+                    .withTelefono(info.getTelefono())
+                    .withCelular(info.getCelular())
+                    .withEmail(info.getEmail());
 
         } catch (IllegalArgumentException ex) {
-
+            // Mostramos un mensaje con el motivo de la excepción.
             vistaNuevoEmpleado.mostrarMensaje("Error: "
                     + "el empleado no pudo ser guardado.\n\n"
                     + ex.getMessage());
         }
     }
 
-    private void setearDatos(InfoEmpleado info, Empleado empleado)
-            throws IllegalArgumentException {
-
-        empleado.withApellido(validarNombres(info.getApellido()))
-                .withNombre(validarNombres(info.getNombre()))
-                .withDocumento(validarDocumento(info.getDocumento()))
-                .withNacimiento(info.getNacimiento())
-                .withCalle(info.getCalle())
-                .withAltura(info.getAltura())
-                .withBarrio(info.getBarrio())
-                .withTelefono(info.getTelefono())
-                .withCelular(info.getCelular())
-                .withEmail(info.getEmail());
-    }
-
     // <editor-fold defaultstate="collapsed" desc=" Validaciones ">
-    public String validarNombres(String value) 
+    public String validarNombres(String value)
             throws IllegalArgumentException {
 
         // Reglas de validación
         checkArgument(value.matches("^[\\p{L} .'-]+$"),
                 "Verifique que el nombre y el apellido sean correctos");
-        
+
         return value;
     }
 
-    public Integer validarDocumento(String value) 
+    public Integer validarDocumento(String value)
             throws IllegalArgumentException {
 
         // Reglas de validación
         checkArgument(isNumeric(value),
                 "El campo documento debe ser un número");
-        
+
         Integer aux = Integer.parseInt(value);
-        checkArgument(aux > 1000000 && aux < 100000000, 
+        checkArgument(aux > 1000000 && aux < 100000000,
                 "Verifique el rango del documento");
 
         // Si es un create
-        if (isNull(id))
+        if (isNull(id)) {
             checkArgument(isNull(empleadoDao.buscarPorDni(aux)),
                     "Ya existe un empleado con ese documento");
-        
-        /* Pero si es un update hay que comprobar además el id debido a la
-        * insertidumbre de desconocer si el campo dni fue o no modificado. */
-        else {
+        } /* Pero si es un update hay que comprobar además el id debido a la
+        * insertidumbre de desconocer si el campo dni fue o no modificado. */ else {
             Empleado empleado = empleadoDao.buscarPorDni(aux);
-            
+
             /* Si es null, entonces lo modifico por uno que no existe, pero si 
              * no es null y los IDs son distintos, el usuario modificó el 
              * documento por uno que ya existe en la BD. (short-circuit)*/

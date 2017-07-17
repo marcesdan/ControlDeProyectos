@@ -16,6 +16,7 @@ import presentacion.controlador.Controlador;
 import presentacion.controlador.ControladorAsignacionNueva;
 import presentacion.vista.Main;
 import presentacion.vista.VistaHija;
+import presentacion.vista.info.Info;
 
 /**
  *
@@ -79,8 +80,6 @@ public class PanelAsignacionNueva
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        btnGuardar = new javax.swing.JButton();
-        btnVolver = new javax.swing.JButton();
         panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtPago = new javax.swing.JTextField();
@@ -92,9 +91,10 @@ public class PanelAsignacionNueva
         jLabel4 = new javax.swing.JLabel();
         txtPuesto = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        btnSupervisor = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
         txtPresupuesto = new javax.swing.JTextField();
+        btnGuardar = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -102,6 +102,22 @@ public class PanelAsignacionNueva
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(jList1);
+
+        panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de la asignación", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
+
+        jLabel1.setText("Empleado");
+
+        jLabel2.setText("Proyecto");
+
+        comboBoxProyecto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel3.setText("Pago");
+
+        jLabel4.setText("Horas");
+
+        jLabel5.setText("Puesto (*)");
+
+        jLabel7.setText("Presupuesto disponible");
 
         btnGuardar.setText("Guardar");
         btnGuardar.setEnabled(true);
@@ -118,29 +134,6 @@ public class PanelAsignacionNueva
             }
         });
 
-        panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de la asignación", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
-
-        jLabel1.setText("Empleado");
-
-        jLabel2.setText("Proyecto");
-
-        comboBoxProyecto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel3.setText("Pago");
-
-        jLabel4.setText("Horas");
-
-        jLabel5.setText("Puesto (*)");
-
-        btnSupervisor.setText("Supervisor");
-        btnSupervisor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSupervisorActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setText("Presupuesto disponible");
-
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
@@ -152,11 +145,9 @@ public class PanelAsignacionNueva
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtPuesto)
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(txtPago, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addComponent(btnSupervisor)))
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtPago, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)))
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,13 +160,20 @@ public class PanelAsignacionNueva
                                 .addComponent(txtPresupuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboBoxProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel7))))
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboBoxProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel7)))
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addComponent(btnGuardar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnVolver)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelLayout.setVerticalGroup(
@@ -207,9 +205,11 @@ public class PanelAsignacionNueva
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSupervisor)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnVolver))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -218,25 +218,14 @@ public class PanelAsignacionNueva
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel, 0, 460, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 274, Short.MAX_VALUE)
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnVolver)
-                        .addGap(25, 25, 25)))
-                .addContainerGap())
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnVolver))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -248,7 +237,7 @@ public class PanelAsignacionNueva
     }
 
     @Override
-    public void setDatos(Object campos) {
+    public void setCamposDeTexto(Info campos) {
 
         // Doloroso pero necesario cast
         InfoAsignacion auxInfo = (InfoAsignacion) campos;
@@ -259,6 +248,7 @@ public class PanelAsignacionNueva
         // Seteamos los campos. Los nulos quedarán vacíos.
         txtEmpleado.setText(auxInfo.getEmpleado().toString());
         txtPago.setText(auxInfo.getPago());
+        txtPresupuesto.setText(auxInfo.getPresupuestoDisponible());
         txtHoras.setText(info.getHoras());
         txtPuesto.setText(auxInfo.getPuesto());
         comboBoxProyecto.getModel().setSelectedItem(auxInfo.getProyecto());
@@ -280,19 +270,14 @@ public class PanelAsignacionNueva
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-        controlador.crearNuevoRegistro(
+        controlador.guardarRegistro(
                 info.withProyecto(comboBoxProyecto.getModel().getSelectedItem()));
     }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnSupervisorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupervisorActionPerformed
-        txtPuesto.setEnabled(!txtPuesto.isEnabled());
-    }//GEN-LAST:event_btnSupervisorActionPerformed
     //</editor-fold>  
 
     // <editor-fold defaultstate="collapsed" desc="Variables generadas por el editor">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JRadioButton btnSupervisor;
     private javax.swing.JButton btnVolver;
     private javax.swing.JComboBox<String> comboBoxProyecto;
     private javax.swing.JLabel jLabel1;

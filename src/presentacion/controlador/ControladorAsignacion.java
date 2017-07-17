@@ -12,6 +12,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static presentacion.vista.info.InfoAsignacion.crearInfoAsignacion;
+import static presentacion.vista.info.InfoEmpleado.crearInfoEmpleado;
 import dao.DaoFactory;
 import dominio.Empleado;
 import dominio.Asignacion;
@@ -21,10 +22,10 @@ import presentacion.vista.VistaHija;
 import presentacion.vista.VistaPadre;
 import presentacion.factory.EmpleadoFactory;
 import presentacion.modelo.ATableModel;
-import static presentacion.vista.info.InfoEmpleado.crearInfoEmpleado;
 import dao.AsignacionDao;
 import presentacion.factory.AsignacionFactory;
 import dao.EmpleadoDao;
+import dao.ProyectoDao;
 import presentacion.factory.AbstractFactory;
 
 /**
@@ -38,11 +39,13 @@ public class ControladorAsignacion implements ControladorPadre {
     private ControladorHijo controladorHijo;
     private final AsignacionDao asignacionDao;
     private final EmpleadoDao empleadoDao;
+    private final ProyectoDao proyectoDao;
 
     public ControladorAsignacion() {
         DaoFactory factory = new DaoFactory();
         asignacionDao = factory.crearAsignacionDao();
         empleadoDao = factory.crearEmpleadoDao();
+        proyectoDao = factory.crearProyectoDao();
     }
     
     @Override
@@ -51,6 +54,7 @@ public class ControladorAsignacion implements ControladorPadre {
     }
     
     //<editor-fold defaultstate="collapsed" desc="Alta">
+    
     /** Crea una nueva asignacion. Si el empleado elegido no esta en la BD,
      * se lo registra, y ahí recién se crea la asignacion. */
     @Override
@@ -73,7 +77,7 @@ public class ControladorAsignacion implements ControladorPadre {
             cargar(new EmpleadoFactory());
             
             // Sino el usuario escribiría el DNI dos veces :)
-            vistaHija.setDatos(crearInfoEmpleado().withDocumento(stDni));
+            vistaHija.setCamposDeTexto(crearInfoEmpleado().withDocumento(stDni));
             
             Main.getInstance().mostrarPanelEnDialog(vistaHija, ""
                     + "Nuevo empleado");
@@ -90,7 +94,7 @@ public class ControladorAsignacion implements ControladorPadre {
         
         // Cargamos los datos del empleado elegido en pantalla
         // (Para que no lo escriba dos veces...)
-        vistaHija.setDatos(crearInfoAsignacion()
+        vistaHija.setCamposDeTexto(crearInfoAsignacion()
                 .withEmpleado(empleado)
         );
         
@@ -118,6 +122,7 @@ public class ControladorAsignacion implements ControladorPadre {
             return false;
         }
     }
+    
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Modificación">
@@ -125,16 +130,13 @@ public class ControladorAsignacion implements ControladorPadre {
     public void modificar(ATableModel model, int fila) {
         // Si se se seleccionó una fila...
         if (fila != -1) {
-            
             // Mostramos en pantalla el panel para modificar el asignacion
             cargar(new AsignacionFactory());
-            
             // Nos quedamos con el campo id de fila seleccionada en la tabla
             Long id = model.getId(fila);
-            
             // Realizamos la busqueda
             Asignacion asignacion = asignacionDao.read(id);
-            vistaHija.setDatos(crearInfoAsignacion()
+            vistaHija.setCamposDeTexto(crearInfoAsignacion()
                     .withId(asignacion.getId()) // Tambien disponemos de "id"...
                     .withEmpleado(asignacion.getEmpleado())
                     .withProyecto(asignacion.getProyecto())
@@ -162,9 +164,21 @@ public class ControladorAsignacion implements ControladorPadre {
             if (vistaPadre.confirmacionBorrado()) {
                 
                 Long id = model.getId(fila); // Obtenemos su id del modelo
-                String nombreEmpleado = (String) model.getValueAt(fila, 0); // y su DNI
-                asignacionDao.delete(asignacionDao.read(id)); // Leemos
                 
+                // (1) Buscamos la asignación
+                Asignacion asignacion = asignacionDao.read(id); 
+                // La eliminamos
+                asignacionDao.delete(asignacion);
+                // Actualizamos las listas
+                asignacion.getEmpleado().removeAsignacion(asignacion);
+                asignacion.getProyecto().removeAsignacion(asignacion);
+                // Y por último actualizamos la base de datos
+                empleadoDao.update(asignacion.getEmpleado());
+                proyectoDao.update(asignacion.getProyecto());
+                
+                // Desde (1) hasta acá, debería haber sido una transacción (atómica)
+                
+                String nombreEmpleado = (String) model.getValueAt(fila, 0);
                 vistaPadre.actualizar();
                 vistaPadre.mostrarMensaje("La asignación de " + nombreEmpleado + ""
                         + " fue borrada exitosamente");

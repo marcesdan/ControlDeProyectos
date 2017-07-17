@@ -15,5 +15,11 @@ import presentacion.vista.Vista;
  */
 public interface Controlador {
 
+    /**
+     * Todo controlador (tanto padre como hijo) tiene asociada una vista.
+     * (y viceversa).
+     * 
+     * @param vista la vista asignada al controlador
+     */
     public void setVista(Vista vista);
 }

@@ -25,9 +25,12 @@ public class AsignacionJpa
     @Override
     public List<Asignacion> getAllOrd() {
         
-       return (List<Asignacion>) getEntityManager()
+        /*  Ordena por la fecha en la que se realizó la asignación. Las más
+            recientes van primero.*/
+        
+        return (List<Asignacion>) getEntityManager()
                 .createQuery("select t from "+ entityClass.getName() + ""
-                        + " t order by t.fechaIngreso asc")
+                        + " t order by t.fechaIngreso desc")
                 .getResultList();
     }
 }

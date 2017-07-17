@@ -13,6 +13,7 @@ import presentacion.controlador.Controlador;
 import presentacion.controlador.ControladorHijo;
 import presentacion.vista.Main;
 import presentacion.vista.VistaHija;
+import presentacion.vista.info.Info;
 import static presentacion.vista.info.InfoProyecto.crearInfoProyecto;
 
 /**
@@ -59,8 +60,6 @@ public class PanelProyectoNuevo
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        btnGuardar = new javax.swing.JButton();
-        btnVolver = new javax.swing.JButton();
         datosLibro = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         txtContratista = new javax.swing.JTextField();
@@ -74,6 +73,8 @@ public class PanelProyectoNuevo
         jLabel8 = new javax.swing.JLabel();
         txtPresupuesto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        btnGuardar = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -81,21 +82,6 @@ public class PanelProyectoNuevo
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(jList1);
-
-        btnGuardar.setText("Guardar");
-        btnGuardar.setEnabled(false);
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        btnVolver.setText("Volver");
-        btnVolver.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVolverActionPerformed(evt);
-            }
-        });
 
         datosLibro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del proyecto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
@@ -118,6 +104,21 @@ public class PanelProyectoNuevo
         txtPresupuesto.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
 
         jLabel3.setText("(dd/mm/aaaa)");
+
+        btnGuardar.setText("Guardar");
+        btnGuardar.setEnabled(false);
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout datosLibroLayout = new javax.swing.GroupLayout(datosLibro);
         datosLibro.setLayout(datosLibroLayout);
@@ -156,7 +157,12 @@ public class PanelProyectoNuevo
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(datosLibroLayout.createSequentialGroup()
                                 .addComponent(datePickerEstimada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())))))
+                                .addContainerGap())))
+                    .addGroup(datosLibroLayout.createSequentialGroup()
+                        .addComponent(btnGuardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnVolver)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         datosLibroLayout.setVerticalGroup(
             datosLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,7 +191,11 @@ public class PanelProyectoNuevo
                 .addGroup(datosLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(datePickerEstimada, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(datePickerInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(datosLibroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnVolver))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -194,14 +204,7 @@ public class PanelProyectoNuevo
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(datosLibro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnVolver)
-                        .addGap(25, 25, 25)))
+                .addComponent(datosLibro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -209,10 +212,6 @@ public class PanelProyectoNuevo
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(datosLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnVolver))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -224,7 +223,7 @@ public class PanelProyectoNuevo
     }
 
     @Override
-    public void setDatos(Object campos) {
+    public void setCamposDeTexto(Info campos) {
         
         // Doloroso pero necesario cast
         InfoProyecto info = (InfoProyecto) campos;
@@ -264,7 +263,7 @@ public class PanelProyectoNuevo
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
       
-        controlador.crearNuevoRegistro(crearInfoProyecto()
+        controlador.guardarRegistro(crearInfoProyecto()
                 .withId(id)
                 .withDescripcion(txtDescripcion.getText())
                 .withPresupuesto(txtPresupuesto.getText())

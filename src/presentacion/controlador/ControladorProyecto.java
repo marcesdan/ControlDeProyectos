@@ -55,7 +55,7 @@ public class ControladorProyecto implements ControladorPadre {
             ProyectoDao dao = new DaoFactory().crearProyectoDao();
             Proyecto proyecto = dao.read(id); 
             
-            vistaHija.setDatos(crearInfoProyecto()
+            vistaHija.setCamposDeTexto(crearInfoProyecto()
                     .withId(proyecto.getId()) // Tambien disponemos de "id"...
                     .withDescripcion(proyecto.getDescripcion())
                     .withContratista(proyecto.getContratista())

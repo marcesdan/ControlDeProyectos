@@ -48,7 +48,7 @@ public class ControladorProyectoNuevo implements ControladorHijo {
     }
 
     @Override
-    public void crearNuevoRegistro(Info info) {
+    public void guardarRegistro(Info info) {
         
         InfoProyecto infoProyecto = (InfoProyecto) info;
         

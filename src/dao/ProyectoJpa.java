@@ -23,6 +23,8 @@ public class ProyectoJpa extends JpaDao<Long, Proyecto>
   
     @Override
     public List<Proyecto> getAllOrd() {
+        /*  Ordena por la fecha de inicio del proyecto. 
+            Los más antigüos van primero */
         
         return (List<Proyecto>) getEntityManager()
                 .createQuery("select s from "+ entityClass.getName() + ""

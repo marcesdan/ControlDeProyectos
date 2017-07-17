@@ -15,7 +15,20 @@ import presentacion.controlador.Controlador;
  */
 public interface Vista {
     
+    /**
+     * Toda vista (tanto padre como hija) tiene asociada un controlador.
+     * (y viceversa).
+     * 
+     * @param controlador el controlador asignado a la vista.
+     */
     public void setControlador(Controlador controlador);
     
+    /**
+     * Método invocado por el controlador para mostrar al usuario un mensaje 
+     * breve en pantalla. Como un mensaje de éxito de operación; o uno de error, 
+     * en el caso de ingresos de datos inválidos o que violan alguna restriccion.
+     * 
+     * @param st el texto que se mostrara en pantalla
+     */
     public void mostrarMensaje(String st);
 }

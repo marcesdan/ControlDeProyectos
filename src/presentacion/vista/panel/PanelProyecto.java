@@ -51,8 +51,9 @@ public class PanelProyecto
         tablaProyectos.getColumnModel().getColumn(0).setPreferredWidth(200);
         tablaProyectos.getColumnModel().getColumn(1).setPreferredWidth(150);
         tablaProyectos.getColumnModel().getColumn(2).setPreferredWidth(110);
-        tablaProyectos.getColumnModel().getColumn(3).setPreferredWidth(120);
+        tablaProyectos.getColumnModel().getColumn(3).setPreferredWidth(110);
         tablaProyectos.getColumnModel().getColumn(4).setPreferredWidth(130);
+        tablaProyectos.getColumnModel().getColumn(5).setPreferredWidth(140);
         jScrollPane2.setViewportView(tablaProyectos);
 
         btnNuevo.setText("Nuevo");
@@ -83,7 +84,7 @@ public class PanelProyecto
             .addGroup(proyectoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(proyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
                     .addGroup(proyectoLayout.createSequentialGroup()
                         .addComponent(btnNuevo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -97,8 +98,8 @@ public class PanelProyecto
             proyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(proyectoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(proyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btnNuevo)
                     .addComponent(btnEliminar)
