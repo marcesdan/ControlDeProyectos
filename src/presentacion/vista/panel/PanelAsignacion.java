@@ -45,11 +45,11 @@ public class PanelAsignacion
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
 
-        panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Asignacion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
+        panel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Asignaciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18))); // NOI18N
 
         tablaAsignacion.setModel(new presentacion.modelo.AsignacionTableModel());
-        tablaAsignacion.getColumnModel().getColumn(0).setPreferredWidth(300);
-        tablaAsignacion.getColumnModel().getColumn(1).setPreferredWidth(300);
+        tablaAsignacion.getColumnModel().getColumn(0).setPreferredWidth(400);
+        tablaAsignacion.getColumnModel().getColumn(1).setPreferredWidth(600);
         tablaAsignacion.getColumnModel().getColumn(2).setPreferredWidth(150);
         tablaAsignacion.getColumnModel().getColumn(3).setPreferredWidth(100);
         tablaAsignacion.getColumnModel().getColumn(4).setPreferredWidth(180);
@@ -84,7 +84,7 @@ public class PanelAsignacion
             .addGroup(panelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 749, Short.MAX_VALUE)
                     .addGroup(panelLayout.createSequentialGroup()
                         .addComponent(btnNuevo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -98,8 +98,8 @@ public class PanelAsignacion
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btnNuevo)
                     .addComponent(btnEliminar)
