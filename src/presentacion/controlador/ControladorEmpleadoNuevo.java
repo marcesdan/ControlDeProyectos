@@ -13,37 +13,21 @@ import static com.google.common.base.Preconditions.checkArgument;
 import dominio.Empleado;
 import dominio.DominioFactory;
 import dao.DaoFactory;
-import presentacion.vista.info.InfoEmpleado;
-import presentacion.vista.Main;
-import presentacion.vista.Vista;
-import presentacion.vista.VistaHija;
-import presentacion.vista.VistaPadre;
 import dao.EmpleadoDao;
+import presentacion.vista.info.InfoEmpleado;
 import presentacion.vista.info.Info;
 
 /**
  *
  * @author marces
  */
-public class ControladorEmpleadoNuevo implements ControladorHijo {
-
-    private VistaPadre vistaEmpleado;
-    private VistaHija vistaNuevoEmpleado;
+public class ControladorEmpleadoNuevo extends ControladorHijo {
+    
     private final EmpleadoDao empleadoDao;
     private Long id;
 
     public ControladorEmpleadoNuevo() {
         empleadoDao = new DaoFactory().crearEmpleadoDao();
-    }
-
-    @Override
-    public void setVista(Vista vista) {
-        this.vistaNuevoEmpleado = (VistaHija) vista;
-    }
-
-    @Override
-    public void setVistaPadre(Vista vista) {
-        this.vistaEmpleado = (VistaPadre) vista;
     }
 
     @Override
@@ -59,26 +43,33 @@ public class ControladorEmpleadoNuevo implements ControladorHijo {
             Empleado empleado = new DominioFactory().crearEmpleado();
             // Llamamos a los set de la clase Empleado. 
             setearCampos(infoEmpleado, empleado);
-            // Persistimos en la BD el empleado.
-            empleadoDao.create(empleado);
-
+            
+            if (camposValidos) {
+                // Persistimos en la BD el empleado.
+                empleadoDao.create(empleado);
+                finalizarOperacion();
+            }
+            
         } else { // De lo contrario se requiere modificar un registro (update)
 
-            // Buscamos la asignación por id y nos quedamos con la referencia.
+            // Buscamos la el empleado por id y nos quedamos con la referencia.
             Empleado empleado = empleadoDao.read(id);
             // Llamamos a los set de la clase Empleado. 
             setearCampos(infoEmpleado, empleado);
-            // Se modifica (persiste) en la BD el empleado (Update)
-            empleadoDao.update(empleado);
+            
+            if (camposValidos) {
+                // Se modifica (persiste) en la BD el empleado (Update)
+                empleadoDao.update(empleado);
+            }
         }
-        vistaNuevoEmpleado.mostrarMensaje("Empleado guardado exitosamente");
-        // Actualizamos el listado con el nuevo registro o su modificación.
-        vistaEmpleado.actualizar();
-        // Cerramos la vista hija.
-        Main.getInstance().cerrarDialogAux();
     }
 
-    private void setearCampos(InfoEmpleado info, Empleado empleado) {
+    @Override
+    protected void setearCampos(Info parameterObject, Object entidad) {
+        // ...
+        InfoEmpleado info = (InfoEmpleado) parameterObject;
+        Empleado empleado = (Empleado) entidad;
+        
         // Se captura una excepcion de validación de campos
         try {
             empleado.withApellido(validarNombres(info.getApellido()))
@@ -91,10 +82,14 @@ public class ControladorEmpleadoNuevo implements ControladorHijo {
                     .withTelefono(info.getTelefono())
                     .withCelular(info.getCelular())
                     .withEmail(info.getEmail());
+            
+            camposValidos = true;
 
         } catch (IllegalArgumentException ex) {
+            
+            camposValidos = false;
             // Mostramos un mensaje con el motivo de la excepción.
-            vistaNuevoEmpleado.mostrarMensaje("Error: "
+            vistaHija.mostrarMensaje("Error: "
                     + "el empleado no pudo ser guardado.\n\n"
                     + ex.getMessage());
         }

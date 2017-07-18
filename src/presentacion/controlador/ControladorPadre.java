@@ -7,13 +7,37 @@
  */
 package presentacion.controlador;
 
+import presentacion.factory.AbstractFactory;
 import presentacion.modelo.ATableModel;
+import presentacion.vista.Vista;
+import presentacion.vista.VistaHija;
+import presentacion.vista.VistaPadre;
 
 /**
  *
  * @author marces
  */
-public interface ControladorPadre extends Controlador{
+public abstract class ControladorPadre implements Controlador {
+    
+    protected VistaPadre vistaPadre;
+    protected VistaHija vistaHija;
+    protected ControladorHijo controladorHijo;
+    
+    @Override
+    public void setVista(Vista vista) {
+        this.vistaPadre = (VistaPadre) vista;
+    }
+    
+     /** Se setean las vistas y los controladores mutuamente.
+      * @param factory 
+      */
+    protected void cargar(AbstractFactory factory) {
+        controladorHijo = factory.crearControladorHijo();
+        vistaHija = factory.crearVistaHija();
+        controladorHijo.setVista(vistaHija);
+        controladorHijo.setVistaPadre(vistaPadre);
+        vistaHija.setControlador(controladorHijo);
+    }
     
     /**
      * Invocado por una vista padre para crear un nuevo registro. Este método 
@@ -22,7 +46,7 @@ public interface ControladorPadre extends Controlador{
      * 
      * Da soporte a la
      */
-    public void nuevo();
+    public abstract void nuevo();
     
     /**
      * Invocado por una vista padre para modificar el registro correspondiente
@@ -33,7 +57,7 @@ public interface ControladorPadre extends Controlador{
      * @param model el modelo de la tabla
      * @param fila la fila seleccionada por el usuario (el registro a modificar)
      */
-    public void modificar(ATableModel model, int fila);
+    public abstract void modificar(ATableModel model, int fila);
     
     /**
      * Invocado por una vista padre para eliminar el registro correspondiente
@@ -41,5 +65,5 @@ public interface ControladorPadre extends Controlador{
      * @param model el modelo de la tabla
      * @param fila la fila seleccionada por el usuario (el registro a eliminar)
      */
-    public void eliminar(ATableModel model, int fila);
+    public abstract void eliminar(ATableModel model, int fila);
 }

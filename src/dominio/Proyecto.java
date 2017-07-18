@@ -15,11 +15,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 /**
@@ -58,11 +56,12 @@ public class Proyecto implements Serializable {
     }
     
     public Integer getPresupuestoDisponible() {
+        
         Integer aux = 0;
         for (Asignacion asignacion : asignaciones)
             aux += asignacion.getPago();
         
-        return aux;
+        return presupuesto - aux;
     }
     
     public boolean addAsignacion(Asignacion asignacion) {
@@ -165,7 +164,7 @@ public class Proyecto implements Serializable {
         return this;
     }
     
-    public Proyecto withtFechaInicio(LocalDate fechaInicio) {
+    public Proyecto withFechaInicio(LocalDate fechaInicio) {
         setFechaInicioLocalDate(fechaInicio);
         return this;
     }

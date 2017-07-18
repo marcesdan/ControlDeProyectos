@@ -12,10 +12,6 @@ import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 import java.time.LocalDate;
 import presentacion.vista.info.InfoProyecto;
-import presentacion.vista.Main;
-import presentacion.vista.Vista;
-import presentacion.vista.VistaHija;
-import presentacion.vista.VistaPadre;
 import presentacion.vista.info.Info;
 import dominio.Proyecto;
 import dominio.DominioFactory;
@@ -26,77 +22,74 @@ import dao.ProyectoDao;
  *
  * @author marces
  */
-public class ControladorProyectoNuevo implements ControladorHijo {
-
-    private VistaPadre vistaProyecto;
-    private VistaHija vistaNuevoProyecto;
-    private final ProyectoDao proyectoDao;
-    private Long id;
-
-    public ControladorProyectoNuevo() {
-        proyectoDao = new DaoFactory().crearProyectoDao();
-    }
-
-    @Override
-    public void setVista(Vista vista) {
-        this.vistaNuevoProyecto = (VistaHija) vista;
-    }
-
-    @Override
-    public void setVistaPadre(Vista vista) {
-        this.vistaProyecto = (VistaPadre) vista;
-    }
+public class ControladorProyectoNuevo extends ControladorHijo {
 
     @Override
     public void guardarRegistro(Info info) {
         
         InfoProyecto infoProyecto = (InfoProyecto) info;
+        ProyectoDao proyectoDao = new DaoFactory().crearProyectoDao();
         
-        try {
+        // El id determina si es un alta o una modificación (Create o Update)
+        Long id = infoProyecto.getId();
+        if (isNull(id)) {
             
-            id = infoProyecto.getId();
-            if (isNull(id)) {
-
-                DominioFactory factory = new DominioFactory();
-                Proyecto proyecto = factory.crearProyecto();
-                setearDatos(infoProyecto, proyecto);
-
+            // Nueva instancia de Proyecto
+            Proyecto proyecto =  new DominioFactory().crearProyecto();
+            // Llamamos a los set de la clase Proyecto
+            setearCampos(infoProyecto, proyecto);
+            
+            if (camposValidos) {
+                // Persistimos en la BD el proyecto
                 proyectoDao.create(proyecto);
-
-            } else {
-
-                Proyecto proyecto = proyectoDao.read(infoProyecto.getId());
-                setearDatos(infoProyecto, proyecto);
-
-                proyectoDao.update(proyecto);
             }
-            vistaNuevoProyecto.mostrarMensaje("Proyecto guardado exitosamente");
-            vistaProyecto.actualizar();
-            Main.getInstance().cerrarDialogAux();
 
-        } catch (IllegalArgumentException ex) {
+        } else { // De lo contrario se requiere modificar un registro (update)
 
-            vistaNuevoProyecto.mostrarMensaje("Error: "
-                    + "el proyecto no pudo ser guardado.\n\n"
-                    + ex.getMessage());
+            // Buscamos el proyecto por id y nos quedamos con la referencia.
+            Proyecto proyecto = proyectoDao.read(infoProyecto.getId());
+            // Llamamos a los set de la clase Proyecto. 
+            setearCampos(infoProyecto, proyecto);
+            
+            if (camposValidos) {
+                // Se modifica (persiste) en la BD el proyecto (Update)
+                proyectoDao.update(proyecto);
+             }
         }
     }
 
-    private void setearDatos(InfoProyecto info, Proyecto proyecto)
-            throws IllegalArgumentException {
-
-        proyecto.withDescripcion(info.getDescripcion())
+    @Override
+    protected void setearCampos(Info parameterObject, Object entidad){
+        
+         // ...
+        InfoProyecto info = (InfoProyecto) parameterObject;
+        Proyecto proyecto = (Proyecto) entidad;
+        
+        // Se captura una excepcion de validación de campos
+        try {
+            proyecto.withDescripcion(info.getDescripcion())
                 .withContratista(info.getContratista())
-                .withtFechaInicio(info.getFechaInicio())
+                .withFechaInicio(info.getFechaInicio())
                 .withFechaEstimada(info.getFechaEstimada())
                 .withPresupuesto(validarPresupuesto(info.getPresupuesto()));
         
-        validarFecha(info.getFechaInicio(), info.getFechaEstimada());
+            // La fecha de inicio debe ser anterior a la fecha estimada.
+            validarFecha(info.getFechaInicio(), info.getFechaEstimada());
+
+            camposValidos = true;
+        
+        } catch(IllegalArgumentException ex) {  
+            camposValidos = false;
+            vistaHija.mostrarMensaje("Error: "
+                        + "el proyecto no pudo ser guardado.\n\n"
+                        + ex.getMessage());
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc=" Validaciones ">
     public Integer validarPresupuesto(String value) throws IllegalArgumentException {
-
+        
+        // Debe ser un numero valido, y es obligatorio (not null)
         checkArgument(isNumeric(value),
                 "El campo presupuesto debe ser un número válido");
 

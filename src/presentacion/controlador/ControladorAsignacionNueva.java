@@ -11,10 +11,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 import presentacion.vista.info.InfoAsignacion;
-import presentacion.vista.Main;
-import presentacion.vista.Vista;
-import presentacion.vista.VistaHija;
-import presentacion.vista.VistaPadre;
 import dao.DaoFactory;
 import dominio.Empleado;
 import dominio.Proyecto;
@@ -26,44 +22,37 @@ import presentacion.vista.info.Info;
  *
  * @author marces
  */
-public class ControladorAsignacionNueva implements ControladorHijo {
-
-    private VistaPadre vistaAsignacion;
-    private VistaHija vistaNuevaAsignacion;
-    private Long id;
-
-    @Override
-    public void setVista(Vista vista) {
-        this.vistaNuevaAsignacion = (VistaHija) vista;
-    }
-
-    @Override
-    public void setVistaPadre(Vista vista) {
-        this.vistaAsignacion = (VistaPadre) vista;
-    }
-
+public class ControladorAsignacionNueva extends ControladorHijo {
+    
     @Override
     public void guardarRegistro(Info info) {
-       
+        
         InfoAsignacion infoAsignacion = (InfoAsignacion) info;
         DaoFactory daoFactory = new DaoFactory();
         
         // El id determina si es un alta o una modificación (Create o Update)
-        id = infoAsignacion.getId();
-        if (isNull(id)) { // Entonces se requiere crear un registro (Create)
+        Long id = infoAsignacion.getId();
+        
+        esModificacion = !isNull(id);
+        if (!esModificacion) { // Entonces se requiere crear un registro (Create)
 
             // Nueva instancia de Asignacion
             Asignacion asignacion = new DominioFactory().crearAsignacion();
             // Llamamos a los set de la clase Asignacion. 
             setearCampos(infoAsignacion, asignacion);
-            // Persistimos en la BD la asignacion.
-            daoFactory.crearAsignacionDao().create(asignacion);
-            // Actualizamos las listas con la referencia hacia Asignacion.
-            asignacion.getEmpleado().addAsignacion(asignacion);
-            asignacion.getProyecto().addAsignacion(asignacion);
-            // Actualizamos en la BD tanto el empleado como el proyecto.
-            daoFactory.crearEmpleadoDao().update(asignacion.getEmpleado());
-            daoFactory.crearProyectoDao().update(asignacion.getProyecto());
+            
+            if (camposValidos){
+                // Persistimos en la BD la asignacion.
+                daoFactory.crearAsignacionDao().create(asignacion);
+                // Actualizamos las listas con la referencia hacia Asignacion.
+                asignacion.getEmpleado().addAsignacion(asignacion);
+                asignacion.getProyecto().addAsignacion(asignacion);
+                // Actualizamos en la BD tanto el empleado como el proyecto.
+                daoFactory.crearEmpleadoDao().update(asignacion.getEmpleado());
+                daoFactory.crearProyectoDao().update(asignacion.getProyecto());
+                
+                finalizarOperacion();
+            }
 
         } else { // De lo contrario se requiere modificar un registro (update)
 
@@ -73,17 +62,21 @@ public class ControladorAsignacionNueva implements ControladorHijo {
                     .read(id);
             // Llamamos a los set de la clase Asignacion.
             setearCampos(infoAsignacion, asignacion);
-            // Se modifica (persiste) en la BD la asignacion (Update)
-            daoFactory.crearAsignacionDao().update(asignacion);
+            
+            if (camposValidos) {
+                // Se modifica (persiste) en la BD la asignacion (Update)
+                daoFactory.crearAsignacionDao().update(asignacion);
+                finalizarOperacion();
+            }
         }
-        vistaNuevaAsignacion.mostrarMensaje("Asignación guardada exitosamente");
-        // Actualizamos el listado con el nuevo registro o su modificación.
-        vistaAsignacion.actualizar();
-        // Cerramos la vista hija.
-        Main.getInstance().cerrarDialogAux();
     }
-
-    private void setearCampos(InfoAsignacion info, Asignacion asignacion) {
+    
+    @Override
+    protected void setearCampos(Info parameterObject, Object entidad) {
+        // ...
+        InfoAsignacion info = (InfoAsignacion) parameterObject;
+        Asignacion asignacion = (Asignacion) entidad;
+        
         // Se captura una excepcion de validación de campos
         try { 
             asignacion.withEmpleado((Empleado) info.getEmpleado()) // info aloja una ref. a empleado
@@ -92,14 +85,19 @@ public class ControladorAsignacionNueva implements ControladorHijo {
                     .withHoras(validarHoras(info.getHoras()))
                     .withPago(validarPago(
                             (Proyecto) info.getProyecto(), 
-                            info.getPago()));
+                            info.getPago(),
+                            asignacion.getPago() ));
+            
+            camposValidos = true;
             
         } catch (IllegalArgumentException ex) {
+            
+            camposValidos = false;
             // Mostramos un mensaje con el motivo de la excepción.
-            vistaNuevaAsignacion.mostrarMensaje(ex.getMessage());
+            vistaHija.mostrarMensaje(ex.getMessage());
         }
     }
-
+     
     /**
      * La vista indica al controlador que cambió el item elegido del
      * comboBoxModel, y requiere los respectivos datos actualizados: en este
@@ -132,7 +130,8 @@ public class ControladorAsignacionNueva implements ControladorHijo {
         }
     }
 
-    private Integer validarPago(Proyecto proyecto, String value) throws IllegalArgumentException {
+    private Integer validarPago(Proyecto proyecto, String value, Integer pagoAnterior) 
+            throws IllegalArgumentException {
 
         // Es opcional...
         if (!isNull(value)) {
@@ -141,16 +140,30 @@ public class ControladorAsignacionNueva implements ControladorHijo {
             checkArgument(isNumeric(value),
                     "El campo horas debe ser un número válido");
 
-            Integer aux = Integer.parseInt(value);
-
-            // Verificamos que sea suficiente el presupuesto 
-            checkArgument(proyecto.presupuestoSuficiente(aux),
+            Integer nuevoPago = Integer.parseInt(value);
+            
+            if (!esModificacion) { // Si la operación es un alta
+                // Verificamos que sea suficiente el presupuesto 
+                checkArgument(proyecto.presupuestoSuficiente(nuevoPago),
                     "No hay presupuesto disponible para pagarle al empleado");
-
-            return aux;
+            }
+             
+            /** Pero si es una modificación y se está modificando el pago tal que
+             * el nuevo pago es mayor que el pago anterior, se debe determinar 
+             * si es suficiente el presupuesto calculando la diferencia
+             * entre el pago que tenía antes con el nuevo pago por validar
+             */ 
+            else if (nuevoPago > pagoAnterior) { // Si son distintos.  
+                checkArgument(
+                        proyecto.presupuestoSuficiente(nuevoPago - pagoAnterior),
+                        "No hay presupuesto disponible para pagarle al empleado");
+            }
+            
+            return nuevoPago;
         }
         
         else return null;
     }
 //</editor-fold>
+
 }

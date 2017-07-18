@@ -22,22 +22,22 @@ import dao.ProyectoDao;
 public class ProyectoComboBoxModel implements ComboBoxModel {
     
     private Proyecto item;
-    private List<Proyecto> funciones;
+    private List<Proyecto> proyecto;
     private ProyectoDao dao;
 
     public ProyectoComboBoxModel() {
         dao = new DaoFactory().crearProyectoDao();
-        funciones = new ArrayList(dao.getAll());
+        proyecto = new ArrayList(dao.getAll());
     }
     
     @Override
     public Object getElementAt(int index) {
-        return funciones.get(index);
+        return proyecto.get(index);
     }
 
     @Override
     public int getSize() {
-        return funciones.size();
+        return proyecto.size();
     }
 
     @Override

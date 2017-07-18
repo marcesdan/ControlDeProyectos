@@ -74,7 +74,6 @@ public class AltasParaPruebas {
 
             // creamos al proyecto p1
             p1 = dominioFactory.crearProyecto()
-                    .withDescripcion("test descripcion del proyecto")
                     .withContratista("test contratista")
                     .withFechaEstimada(LocalDate.now())
                     .withPresupuesto(1000);
@@ -93,7 +92,8 @@ public class AltasParaPruebas {
                     .withDocumento(marces.getDocumento() + i);
 
             // en la tabla mostramos los proyectos ordenados por fecha de inicio
-            p1.withtFechaInicio(LocalDate.now().minusDays(i));
+            p1.withFechaInicio(LocalDate.now().minusDays(i))
+              .withDescripcion(i + " proyecto test");
 
             // en la tabla mostramos las asignaciones ordenados por fecha de ingreso
             marcesP1.withFechaIngreso(LocalDate.now().minusDays(i));

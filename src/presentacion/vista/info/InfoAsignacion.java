@@ -11,22 +11,26 @@ import static com.google.common.base.Strings.emptyToNull;
 import static java.util.Objects.isNull;
 
 /**
- *
+ * Clase utilizada para implementar un "Parameter Object Refactoring".
+ * Sirve de intermediaria entre las clases de dominio y las vistas (y los
+ * controladores)
+ * 
+ * Además, se toma como medida que los atributos del tipo cadena de texto 
+ * (varchar) que son opcionales (nullables), se almacenan en la BD como
+ * valores nulos, en lugar de cadenas vacias ( "" ). Es por eso que se
+ * utiliza el método "emptyToNull" en los métodos "with".
+ * 
  * @author marces
  */
 public class InfoAsignacion extends Info {
     
-    private Long id;
+   
     private String pago, puesto, horas, presupuestoDisponible;
     private Object proyecto, empleado;
     
     
     public static InfoAsignacion crearInfoAsignacion(){
         return new InfoAsignacion();
-    }
-    
-    public Long getId() {
-        return id;
     }
     
     public Object getProyecto() {

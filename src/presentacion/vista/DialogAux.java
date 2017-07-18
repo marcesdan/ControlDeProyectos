@@ -7,17 +7,13 @@
  */
 package presentacion.vista;
 
-import javax.swing.JDialog;
-
 /**
  *
  * @author marces
  */
 public class DialogAux extends javax.swing.JDialog {
 
-    /**
-     * Creates new form DialogAux
-     */
+    
     public DialogAux(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();

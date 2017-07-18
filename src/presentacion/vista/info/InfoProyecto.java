@@ -10,21 +10,25 @@ package presentacion.vista.info;
 import java.time.LocalDate;
 
 /**
- *
+ * Clase utilizada para implementar un "Parameter Object Refactoring".
+ * Sirve de intermediaria entre las clases de dominio y las vistas (y los
+ * controladores)
+ * 
+ * Además, se toma como medida que los atributos del tipo cadena de texto 
+ * (varchar) que son opcionales (nullables), se almacenan en la BD como
+ * valores nulos, en lugar de cadenas vacias ( "" ). Es por eso que se
+ * utiliza el método "emptyToNull" en los métodos "with".
+ * 
  * @author marces
  */
 public class InfoProyecto extends Info {
     
-    private Long id;
+   
     private String presupuesto, descripcion, contratista;
     private LocalDate fechaInicio, fechaEstimada;
     
     public static InfoProyecto crearInfoProyecto(){
         return new InfoProyecto();
-    }
-    
-    public Long getId() {
-        return id;
     }
 
     public String getPresupuesto() {

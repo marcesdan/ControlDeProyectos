@@ -8,7 +8,8 @@
 package presentacion.vista.info;
 
 /**
- *
+ * Clase utilizada para implementar un "Parameter Object Refactoring"
+ * 
  * @author marces
  */
 class InfoContacto {

@@ -15,12 +15,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import javax.lang.model.type.NullType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 

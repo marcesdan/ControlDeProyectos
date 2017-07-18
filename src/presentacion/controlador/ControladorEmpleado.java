@@ -7,37 +7,24 @@
  */
 package presentacion.controlador;
 
+import static presentacion.vista.info.InfoEmpleado.crearInfoEmpleado;
 import dao.DaoFactory;
 import dominio.Empleado;
 import presentacion.factory.EmpleadoFactory;
 import presentacion.vista.Main;
-import presentacion.vista.Vista;
-import presentacion.vista.VistaHija;
-import presentacion.vista.VistaPadre;
 import presentacion.modelo.ATableModel;
-import static presentacion.vista.info.InfoEmpleado.crearInfoEmpleado;
 import dao.EmpleadoDao;
-import presentacion.factory.AbstractFactory;
 
 /**
  *
  * @author marces
  */
-public class ControladorEmpleado implements ControladorPadre {
-    
-    private VistaPadre vistaPadre;
-    private VistaHija vistaHija;
-    private ControladorHijo controladorHijo;
-    
-    @Override
-    public void setVista(Vista vista) {
-        this.vistaPadre = (VistaPadre) vista;
-    }
+public class ControladorEmpleado extends ControladorPadre {
    
     @Override
     public void nuevo() {
         // Se setean las vistas y los controladores mutuamente.
-        cargar();
+        cargar(new EmpleadoFactory());
         // Y se muestra la vista hija en pantalla
         Main.getInstance().mostrarPanelEnDialog(vistaHija, ""
                     + "Nuevo empleado");
@@ -49,7 +36,7 @@ public class ControladorEmpleado implements ControladorPadre {
         if (fila != -1 ) { // Si se se seleccionó una fila...
             
             // Se setean las vistas y los controladores mutuamente.
-            cargar();
+            cargar(new EmpleadoFactory());
             // Nos quedamos con el campo id de fila seleccionada en la tabla
             Long id = model.getId(fila);
             
@@ -102,22 +89,12 @@ public class ControladorEmpleado implements ControladorPadre {
                 dao.delete(dao.read(id));
                 
                 // Se actializa el listado en pantalla.
-                vistaPadre.actualizar();
+                vistaPadre.actualizarListado();
                 vistaPadre.mostrarMensaje("El empleado "+nombre+""
                         + " fue borrado exitosamente");
             }
         }
         else vistaPadre.mostrarMensaje(""
                 + "Primero debe seleccionar una fila de la tabla");
-    }
-    
-    /** Se setean las vistas y los controladores mutuamente. */
-    private void cargar() {
-        AbstractFactory factory = new EmpleadoFactory();
-        controladorHijo = factory.crearControladorHijo();
-        vistaHija = factory.crearVistaHija();
-        controladorHijo.setVista(vistaHija);
-        controladorHijo.setVistaPadre(vistaPadre);
-        vistaHija.setControlador(controladorHijo);
     }
 }

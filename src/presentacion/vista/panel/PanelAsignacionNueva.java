@@ -7,13 +7,13 @@
  */
 package presentacion.vista.panel;
 
+import static java.util.Objects.isNull;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import presentacion.vista.info.InfoAsignacion;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import presentacion.controlador.Controlador;
 import presentacion.controlador.ControladorAsignacionNueva;
+import presentacion.modelo.ProyectoComboBoxModel;
 import presentacion.vista.Main;
 import presentacion.vista.VistaHija;
 import presentacion.vista.info.Info;
@@ -22,58 +22,54 @@ import presentacion.vista.info.Info;
  *
  * @author marces
  */
-public class PanelAsignacionNueva 
+public class PanelAsignacionNueva
         extends javax.swing.JPanel implements VistaHija {
 
     private ControladorAsignacionNueva controlador;
-    private Long id = null;
     private InfoAsignacion info;
-
-    /**
-     * Creamos una nueva instancia de PanelNuevoTicket Ésta vista se utiliza
-     * tanto para el alta de un ticket, como también para su modificación.
-     */
+    private ValidadorDeCampos validador;
+    
     public PanelAsignacionNueva() {
         initComponents();
         localInit();
     }
     
-    //<editor-fold defaultstate="collapsed" desc="Inicialización local">
     private void localInit() {
-        
+
         // Le pasamos los textFields que no deben estar vacíos.
-        ValidadorDeCampos validador = new ValidadorDeCampos(txtPuesto);
-        
+        validador = new ValidadorDeCampos(txtPuesto);
+
         /* Le pasamos el botón que estará habilitado solo si dichos
         campos no estan vacíos */
         validador.setBoton(btnGuardar);
+
         validador.setFlag(false);
-        
+
         /* Para actuar en respuesta a los cambios de función
-        * en el ProyectoComboBoxModel*/
+            * en el ProyectoComboBoxModel*/
         this.comboBoxProyecto.addItemListener(new ItemListener() {
-            
+
             @Override
             public void itemStateChanged(ItemEvent e) {
                 // Produce eventos de selección y deselección (solo queremos uno).
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    
+
                     controlador.cambiaElProyecto(
-                            info,comboBoxProyecto.getModel().getSelectedItem());
-                    
+                            info, comboBoxProyecto.getModel().getSelectedItem());
+
                     /* Se eligió un proyecto, entonces la condición externa
-                    se pone en true (debe elegirse un proyecto para que el
-                    boton guardar se habilite */
+                        se pone en true (debe elegirse un proyecto para que el
+                        boton guardar se habilite */
                     validador.setFlag(true);
                     btnGuardar.setEnabled(validador.isCamposIngresados());
-                    
+
                     // Actualizamos los campos que dependen del comboBoxProyecto.
                     txtPresupuesto.setText(info.getPresupuestoDisponible());
                 }
             }
         });
+
     }
-//</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -109,7 +105,7 @@ public class PanelAsignacionNueva
 
         jLabel2.setText("Proyecto");
 
-        comboBoxProyecto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxProyecto.setModel(new ProyectoComboBoxModel());
 
         jLabel3.setText("Pago");
 
@@ -157,42 +153,36 @@ public class PanelAsignacionNueva
                             .addComponent(txtHoras)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(txtPresupuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtPresupuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(comboBoxProyecto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelLayout.createSequentialGroup()
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comboBoxProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel7)))
-                            .addGroup(panelLayout.createSequentialGroup()
                                 .addComponent(btnGuardar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnVolver)))
+                                .addComponent(btnVolver))
+                            .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(9, 9, 9)
-                        .addComponent(comboBoxProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(8, 8, 8)
-                        .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel2)
+                .addGap(9, 9, 9)
+                .addComponent(comboBoxProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addGap(4, 4, 4)
+                .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel7))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPago, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -230,7 +220,7 @@ public class PanelAsignacionNueva
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    // <editor-fold defaultstate="collapsed" desc="Nuestro código">   
+    // <editor-fold defaultstate="collapsed" desc="Overrides">   
     @Override
     public void setControlador(Controlador controlador) {
         this.controlador = (ControladorAsignacionNueva) controlador;
@@ -239,39 +229,42 @@ public class PanelAsignacionNueva
     @Override
     public void setCamposDeTexto(Info campos) {
 
-        // Doloroso pero necesario cast
-        InfoAsignacion auxInfo = (InfoAsignacion) campos;
-
-        // Necesitamos el id para luego actualizar el ticket adecuado.
-        this.id = auxInfo.getId();
+        info = (InfoAsignacion) campos;
 
         // Seteamos los campos. Los nulos quedarán vacíos.
-        txtEmpleado.setText(auxInfo.getEmpleado().toString());
-        txtPago.setText(auxInfo.getPago());
-        txtPresupuesto.setText(auxInfo.getPresupuestoDisponible());
+        txtEmpleado.setText(info.getEmpleado().toString());
+        txtPago.setText(info.getPago());
+        txtPresupuesto.setText(info.getPresupuestoDisponible());
         txtHoras.setText(info.getHoras());
-        txtPuesto.setText(auxInfo.getPuesto());
-        comboBoxProyecto.getModel().setSelectedItem(auxInfo.getProyecto());
+        txtPuesto.setText(info.getPuesto());
+        comboBoxProyecto.getModel().setSelectedItem(info.getProyecto());
 
-        // Lo guardamos porque solo se modificaría la funcion.
-        this.info = auxInfo;
+        
+        if (!isNull(info.getId())) { // Si es una modificación     
+            // Los datos obligatorios ya estan cargados.
+            btnGuardar.setEnabled(true);    
+            // No se utiliza el comboBox, por ende solo importan los textFields.
+            validador.setFlag(true);  
+            comboBoxProyecto.setEnabled(false);
+            txtEmpleado.setEditable(false);
+            txtPresupuesto.setEnabled(false);
+        }
     }
-
-    @Override
-    public void mostrarMensaje(String st) {
-        JOptionPane.showMessageDialog(new JFrame(), st);
-    }
+    
     //</editor-fold>  
 
-    // <editor-fold defaultstate="collapsed" desc="Manejamos eventos">  
+    // <editor-fold defaultstate="collapsed" desc="Manejo de eventos">  
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         Main.getInstance().cerrarDialogAux();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-        controlador.guardarRegistro(
-                info.withProyecto(comboBoxProyecto.getModel().getSelectedItem()));
+        controlador.guardarRegistro(info
+                .withProyecto(comboBoxProyecto.getModel().getSelectedItem())
+                .withPago(txtPago.getText())
+                .withHoras(txtHoras.getText())
+                .withPuesto(txtPuesto.getText()));
     }//GEN-LAST:event_btnGuardarActionPerformed
     //</editor-fold>  
 

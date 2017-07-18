@@ -8,7 +8,6 @@
 package presentacion.vista;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import presentacion.controlador.Controlador;
 import presentacion.controlador.ControladorPrincipal;
 
@@ -36,11 +35,6 @@ public class FramePrincipal
     @Override
     public void setControlador(Controlador controlador) {
         this.controlador = (ControladorPrincipal) controlador;
-    }
-
-    @Override
-    public void mostrarMensaje(String st) {
-        JOptionPane.showMessageDialog(new JFrame(), st);
     }
 
     /**

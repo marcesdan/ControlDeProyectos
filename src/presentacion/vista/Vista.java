@@ -7,6 +7,8 @@
  */
 package presentacion.vista;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import presentacion.controlador.Controlador;
 
 /**
@@ -30,5 +32,8 @@ public interface Vista {
      * 
      * @param st el texto que se mostrara en pantalla
      */
-    public void mostrarMensaje(String st);
+    public default void mostrarMensaje(String st){
+        
+        JOptionPane.showMessageDialog(new JFrame(), st);
+    }
 }

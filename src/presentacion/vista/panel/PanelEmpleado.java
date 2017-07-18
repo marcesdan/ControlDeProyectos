@@ -7,8 +7,6 @@
  */
 package presentacion.vista.panel;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import presentacion.controlador.Controlador;
 import presentacion.controlador.ControladorPadre;
 import presentacion.modelo.ATableModel;
@@ -123,35 +121,20 @@ public class PanelEmpleado
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    //<editor-fold defaultstate="collapsed" desc="Nuestro código">
+    //<editor-fold defaultstate="collapsed" desc="Overrides">
     @Override
     public void setControlador(Controlador controlador) {
         this.controlador = (ControladorPadre) controlador;
     }
 
     @Override
-    public void mostrarMensaje(String st) {
-        JOptionPane.showMessageDialog(new JFrame(), st);
-    }
-
-    @Override
-    public void actualizar() {
+    public void actualizarListado() {
         ((EmpleadoTableModel) tablaEmpleado.getModel()).update();
-    }
-    
-    @Override
-    public boolean confirmacionBorrado() {
-        
-        int dialogButton = JOptionPane.YES_NO_OPTION;
-        int dialogResult = JOptionPane.showConfirmDialog(this, ""
-                + "¿Seguro desea borrar el ítem seleccionado?", "Confirmación", dialogButton);
-        
-        return dialogResult == 0;
     }
     
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Manejamos eventos">
+    //<editor-fold defaultstate="collapsed" desc="Manejo de eventos">
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
       
         controlador.eliminar(

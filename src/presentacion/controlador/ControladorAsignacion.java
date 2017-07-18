@@ -17,26 +17,19 @@ import dao.DaoFactory;
 import dominio.Empleado;
 import dominio.Asignacion;
 import presentacion.vista.Main;
-import presentacion.vista.Vista;
-import presentacion.vista.VistaHija;
-import presentacion.vista.VistaPadre;
 import presentacion.factory.EmpleadoFactory;
 import presentacion.modelo.ATableModel;
 import dao.AsignacionDao;
 import presentacion.factory.AsignacionFactory;
 import dao.EmpleadoDao;
 import dao.ProyectoDao;
-import presentacion.factory.AbstractFactory;
 
 /**
  *
  * @author marces
  */
-public class ControladorAsignacion implements ControladorPadre {
-
-    private VistaPadre vistaPadre;
-    private VistaHija vistaHija;
-    private ControladorHijo controladorHijo;
+public class ControladorAsignacion extends ControladorPadre {
+    
     private final AsignacionDao asignacionDao;
     private final EmpleadoDao empleadoDao;
     private final ProyectoDao proyectoDao;
@@ -46,11 +39,6 @@ public class ControladorAsignacion implements ControladorPadre {
         asignacionDao = factory.crearAsignacionDao();
         empleadoDao = factory.crearEmpleadoDao();
         proyectoDao = factory.crearProyectoDao();
-    }
-    
-    @Override
-    public void setVista(Vista vista) {
-        this.vistaPadre = (VistaPadre) vista;
     }
     
     //<editor-fold defaultstate="collapsed" desc="Alta">
@@ -124,8 +112,7 @@ public class ControladorAsignacion implements ControladorPadre {
     }
     
     //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="Modificación">
+
     @Override
     public void modificar(ATableModel model, int fila) {
         // Si se se seleccionó una fila...
@@ -153,9 +140,7 @@ public class ControladorAsignacion implements ControladorPadre {
                 + "Primero debe seleccionar una fila de la tabla");
         
     }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Baja">
+    
     @Override
     public void eliminar(ATableModel model, int fila) {
         
@@ -179,23 +164,12 @@ public class ControladorAsignacion implements ControladorPadre {
                 // Desde (1) hasta acá, debería haber sido una transacción (atómica)
                 
                 String nombreEmpleado = (String) model.getValueAt(fila, 0);
-                vistaPadre.actualizar();
+                vistaPadre.actualizarListado();
                 vistaPadre.mostrarMensaje("La asignación de " + nombreEmpleado + ""
                         + " fue borrada exitosamente");
             }
         }
         else vistaPadre.mostrarMensaje(""
                 + "Primero debe seleccionar una fila de la tabla");
-    }
-    
-//</editor-fold>
-    
-    /** Se setean las vistas y los controladores mutuamente. */
-    private void cargar(AbstractFactory factory) {
-        controladorHijo = factory.crearControladorHijo();
-        vistaHija = factory.crearVistaHija();
-        controladorHijo.setVista(vistaHija);
-        controladorHijo.setVistaPadre(vistaPadre);
-        vistaHija.setControlador(controladorHijo);
     }
 }

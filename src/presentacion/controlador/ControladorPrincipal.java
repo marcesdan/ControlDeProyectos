@@ -17,7 +17,7 @@ import presentacion.factory.AbstractFactory;
 
 /**
  * Clase encargada de controlar la vista principal donde se encuentra la barra
- * de menú que llamará a las vistas: cliente, teatro, funcion y ticket.
+ * de menú que llamará a las vistas padre.
  *
  * @author marces
  */

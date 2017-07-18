@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Mon Jul 17 10:13:14 ART 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-015d-50ae-6979-0000000dd470 
+Tue Jul 18 10:35:42 ART 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-015d-55e9-5730-0000000deff0 
 on database directory /media/marces/Datos/Proyectos/ControlDeProyectos/BDProyectos with class loader sun.misc.Launcher$AppClassLoader@14ae5a5 
 Loaded from file:/media/marces/Datos/Proyectos/ControlDeProyectos/lib/derby.jar
 java.vendor=Oracle Corporation

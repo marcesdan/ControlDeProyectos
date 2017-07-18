@@ -11,12 +11,19 @@ import static com.google.common.base.Strings.emptyToNull;
 import java.time.LocalDate;
 
 /**
- *
+ * Clase utilizada para implementar un "Parameter Object Refactoring".
+ * Sirve de intermediaria entre las clases de dominio y las vistas (y los
+ * controladores)
+ * 
+ * Además, se toma como medida que los atributos del tipo cadena de texto 
+ * (varchar) que son opcionales (nullables), se almacenan en la BD como
+ * valores nulos, en lugar de cadenas vacias ( "" ). Es por eso que se
+ * utiliza el método "emptyToNull" en los métodos "with".
+ * 
  * @author marces
  */
 public class InfoEmpleado extends Info {
-
-    private Long id;
+    
     private String documento, apellido, nombre;
     private LocalDate nacimiento;
     
@@ -33,9 +40,6 @@ public class InfoEmpleado extends Info {
     }
     
     //<editor-fold defaultstate="collapsed" desc="Getters">
-    public Long getId() {
-        return id;
-    }
     
     public String getDocumento() {
         return documento;
@@ -131,7 +135,8 @@ public class InfoEmpleado extends Info {
         return this;
     }
 
-    public InfoEmpleado withBarrio(String barrio) {
+    public InfoEmpleado withBarrio(String barrio) { 
+        // Es opcional. Se toma como medida que la ausencia de
         this.infoDireccion.setBarrio(emptyToNull(barrio));
         return this;
     }

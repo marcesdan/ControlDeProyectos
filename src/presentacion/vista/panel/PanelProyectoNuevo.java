@@ -7,8 +7,6 @@
  */
 package presentacion.vista.panel;
 import presentacion.vista.info.InfoProyecto;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import presentacion.controlador.Controlador;
 import presentacion.controlador.ControladorHijo;
 import presentacion.vista.Main;
@@ -216,7 +214,7 @@ public class PanelProyectoNuevo
         );
     }// </editor-fold>//GEN-END:initComponents
  
-    // <editor-fold defaultstate="collapsed" desc="Nuestro código">   
+    // <editor-fold defaultstate="collapsed" desc="Overrides">   
     @Override
     public void setControlador(Controlador controlador) {
         this.controlador = (ControladorHijo) controlador;
@@ -249,14 +247,9 @@ public class PanelProyectoNuevo
         datePickerInicio.setDate(info.getFechaInicio());
         datePickerEstimada.setDate(info.getFechaEstimada());
     }
-    
-    @Override
-    public void mostrarMensaje(String st) {
-        JOptionPane.showMessageDialog(new JFrame(), st);
-    }
      //</editor-fold>  
 
-    // <editor-fold defaultstate="collapsed" desc="Manejamos eventos">  
+    // <editor-fold defaultstate="collapsed" desc="Manejo de eventos">  
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         Main.getInstance().cerrarDialogAux();
     }//GEN-LAST:event_btnVolverActionPerformed

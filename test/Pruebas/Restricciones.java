@@ -61,7 +61,7 @@ public class Restricciones {
         p1 = dominioFactory.crearProyecto()
                 .withDescripcion("Proyecto 1")
                 .withContratista("OMG")
-                .withtFechaInicio(LocalDate.now())
+                .withFechaInicio(LocalDate.now())
                 .withPresupuesto(1000);
 
         // asignamos marces y p1

@@ -66,6 +66,9 @@ public class Main implements Runnable{
         return dialogAux;
     }
     
+    /**
+     * Cierra la vista hija, volviendo a tomar el control al vista padre.
+     */
     public void cerrarDialogAux() {
         dialogAux.dispose();
     }

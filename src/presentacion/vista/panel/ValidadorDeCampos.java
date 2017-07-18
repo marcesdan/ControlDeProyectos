@@ -67,6 +67,13 @@ public class ValidadorDeCampos implements DocumentListener {
         return flag;
     }
     
+    /** Setea una condicion externa que determina si se habilita o no el botón
+     * Por ejemplo: la selección de un checkBox, un radioButton, un comboBox  
+     * (en este caso), etc. Arranca en true por si no es necesaria (solo son 
+     * los textField).
+     * 
+     * @param flag si es true solo importarán los textFields, sino, los 
+     * textFields junto con ésta condición externa */
     public void setFlag(boolean flag) {
         this.flag = flag;
     }

@@ -9,34 +9,22 @@ package presentacion.controlador;
 
 import static presentacion.vista.info.InfoProyecto.crearInfoProyecto;
 import dao.DaoFactory;
+import dao.ProyectoDao;
 import dominio.Proyecto;
 import presentacion.vista.Main;
-import presentacion.vista.Vista;
-import presentacion.vista.VistaHija;
-import presentacion.vista.VistaPadre;
 import presentacion.modelo.ATableModel;
-import dao.ProyectoDao;
 import presentacion.factory.ProyectoFactory;
-import presentacion.factory.AbstractFactory;
 
 /**
  *
  * @author marces
  */
-public class ControladorProyecto implements ControladorPadre {
-    
-    private VistaPadre vistaPadre;
-    private VistaHija vistaHija;
-    private ControladorHijo controladorHijo;
-    
-    @Override
-    public void setVista(Vista vista) {
-        this.vistaPadre = (VistaPadre) vista;
-    }
+public class ControladorProyecto extends ControladorPadre {
     
     @Override
     public void nuevo() {
-        cargar();
+        
+        cargar(new ProyectoFactory());
         Main.getInstance().mostrarPanelEnDialog(vistaHija, ""
                     + "Nuevo proyecto");
     }
@@ -46,7 +34,7 @@ public class ControladorProyecto implements ControladorPadre {
         
         // Si se se seleccionó una fila...
         if (fila != -1 ) {
-            cargar();
+            cargar(new ProyectoFactory());
             
             // Nos quedamos con el campo id de fila seleccionada en la tabla
             Long id = model.getId(fila);
@@ -85,7 +73,7 @@ public class ControladorProyecto implements ControladorPadre {
                 ProyectoDao dao = new DaoFactory().crearProyectoDao();
                 dao.delete(dao.read(id));
                 
-                vistaPadre.actualizar();
+                vistaPadre.actualizarListado();
                 vistaPadre.mostrarMensaje("El proyecto "+apellido+""
                         + " fue borrado exitosamente");
             }
@@ -93,15 +81,5 @@ public class ControladorProyecto implements ControladorPadre {
         
         else vistaPadre.mostrarMensaje(""
                 + "Primero debe seleccionar una fila de la tabla");
-    }
-    
-    /** Se setean las vistas y los controladores mutuamente. */
-    private void cargar() {    
-        AbstractFactory factory = new ProyectoFactory();
-        controladorHijo = factory.crearControladorHijo();
-        vistaHija = factory.crearVistaHija();
-        controladorHijo.setVista(vistaHija);
-        controladorHijo.setVistaPadre(vistaPadre);
-        vistaHija.setControlador(controladorHijo);
     }
 }
