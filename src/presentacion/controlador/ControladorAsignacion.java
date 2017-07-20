@@ -130,6 +130,10 @@ public class ControladorAsignacion extends ControladorPadre {
                     .withHoras(asignacion.getHoras().toString())
                     .withPago(asignacion.getPago().toString())
                     .withPuesto(asignacion.getPuesto())
+                    .withPresupuestoDisponible(asignacion
+                            .getProyecto()
+                            .getPresupuestoDisponible()
+                            .toString())
             );
             
             Main.getInstance().mostrarPanelEnDialog(vistaHija, ""

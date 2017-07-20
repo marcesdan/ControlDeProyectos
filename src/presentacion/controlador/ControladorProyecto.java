@@ -10,7 +10,10 @@ package presentacion.controlador;
 import static presentacion.vista.info.InfoProyecto.crearInfoProyecto;
 import dao.DaoFactory;
 import dao.ProyectoDao;
+import dominio.Asignacion;
+import dominio.Empleado;
 import dominio.Proyecto;
+import java.util.Iterator;
 import presentacion.vista.Main;
 import presentacion.modelo.ATableModel;
 import presentacion.factory.ProyectoFactory;
@@ -66,15 +69,35 @@ public class ControladorProyecto extends ControladorPadre {
         if (fila != -1 ) {
             
             if (vistaPadre.confirmacionBorrado()) {
-                
+                // Nos quedamos con el id y la descripcion del proyecto a borrar
                 Long id = model.getId(fila);
-                String apellido = (String) model.getValueAt(fila, 0);
-               
-                ProyectoDao dao = new DaoFactory().crearProyectoDao();
-                dao.delete(dao.read(id));
+                String descripcion = (String) model.getValueAt(fila, 0);
+                // Buscamos el proyecto
+                ProyectoDao proyectoDao = new DaoFactory().crearProyectoDao();
+                Proyecto proyecto = proyectoDao.read(id);
+                // Se elimina el proyecto de la BD
+                proyectoDao.delete(proyecto);
+                
+                /**
+                 * Además de eliminar el proyecto, hay que eliminar con él todas 
+                 * sus asignaciones. Con lo cual es necesario actualizar la lista 
+                 * de cada uno de los empleados que participaban en ese proyecto
+                 */
+                Iterator<Asignacion> i = proyecto.getAsignaciones().iterator();
+                while (i.hasNext()) {
+                    Asignacion asignacion = i.next();
+                    // Obtenemos el empleado
+                    Empleado empleado = asignacion.getEmpleado();
+                    // Eliminamos la asignación del proyecto a borrar
+                    empleado.removeAsignacion(asignacion);
+                    // Actualizamos
+                    new DaoFactory().crearEmpleadoDao().update(empleado);
+                    // Y se elimina el elemento de la lista
+                    i.remove();
+                }
                 
                 vistaPadre.actualizarListado();
-                vistaPadre.mostrarMensaje("El proyecto "+apellido+""
+                vistaPadre.mostrarMensaje("El proyecto "+descripcion+""
                         + " fue borrado exitosamente");
             }
         }

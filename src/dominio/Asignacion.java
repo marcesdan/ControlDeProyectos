@@ -51,12 +51,13 @@ public class Asignacion implements Serializable {
     private Integer pago, horas;
     
     public Asignacion() {
+        pago = 0;
+        horas = 0;
         
         // Convierte LocalDate.now() en un sql.Date
         fechaIngreso = 
                 new LocalDateConverter().convertToSqlDate(LocalDate.now());
     }
-    
     //<editor-fold defaultstate="collapsed" desc="Getters y Setters">
     
     public LocalDate getFechaIngresoLocalDate() {

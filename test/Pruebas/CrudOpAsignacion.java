@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
  *
  * @author marces
  */
-public class OperacionesCRUD {
+public class CrudOpAsignacion {
 
     //Factory de las clases de dominio
     private final DominioFactory dominioFactory;
@@ -36,7 +36,7 @@ public class OperacionesCRUD {
     private final ProyectoDao proyectoDao;
     private final AsignacionDao asignacionDao;
 
-    public OperacionesCRUD() {
+    public CrudOpAsignacion() {
 
         DaoFactory daoFactory = new DaoFactory();
 

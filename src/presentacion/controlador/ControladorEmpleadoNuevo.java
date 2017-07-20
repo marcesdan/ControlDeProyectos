@@ -37,7 +37,8 @@ public class ControladorEmpleadoNuevo extends ControladorHijo {
 
         // El id determina si es un alta o una modificación (Create o Update)
         id = infoEmpleado.getId();
-        if (isNull(id)) { // Entonces se requiere crear un registro (Create)
+        esModificacion = !isNull(id);
+        if (!esModificacion) { // Entonces se requiere crear un registro (Create)
 
             // Nueva instancia de Empleado
             Empleado empleado = new DominioFactory().crearEmpleado();
@@ -60,6 +61,7 @@ public class ControladorEmpleadoNuevo extends ControladorHijo {
             if (camposValidos) {
                 // Se modifica (persiste) en la BD el empleado (Update)
                 empleadoDao.update(empleado);
+                finalizarOperacion();
             }
         }
     }
@@ -118,13 +120,16 @@ public class ControladorEmpleadoNuevo extends ControladorHijo {
                 "Verifique el rango del documento");
 
         // Si es un create
-        if (isNull(id)) {
+        if (!esModificacion) {
             checkArgument(isNull(empleadoDao.buscarPorDni(aux)),
                     "Ya existe un empleado con ese documento");
-        } /* Pero si es un update hay que comprobar además el id debido a la
-        * insertidumbre de desconocer si el campo dni fue o no modificado. */ else {
+        }
+        
+        /** Pero si es un update hay que comprobar además el id debido a que
+         *  se desconoce si el campo documento fue o no modificado.
+         */  
+        else {
             Empleado empleado = empleadoDao.buscarPorDni(aux);
-
             /* Si es null, entonces lo modifico por uno que no existe, pero si 
              * no es null y los IDs son distintos, el usuario modificó el 
              * documento por uno que ya existe en la BD. (short-circuit)*/

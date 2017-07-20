@@ -46,15 +46,20 @@ public class Proyecto implements Serializable {
     
     //<editor-fold defaultstate="collapsed" desc="Responsabilidades">
     /** 
+     * Determina si el proyecto puede afrontar o no un costo.
+     * Por ejemplo: si hay presupuesto para pagarle un monto X a un empleado.
      * 
      * @param monto costo que deberá afrontar el proyecto
      * @return si hay presupuesto disponible para ese monto
      */
     public boolean presupuestoSuficiente(Integer monto) {
-        Integer presupuestoDisponible = getPresupuestoDisponible();
-        return presupuesto >= presupuestoDisponible + monto;
+        return getPresupuestoDisponible() - monto >= 0;
     }
     
+    /** 
+     * @return el presupuesto disponible del proyecto deduciendo sus costos
+     * (la sumatoria de los pagos a los empleados asignados al proyecto).
+     */
     public Integer getPresupuestoDisponible() {
         
         Integer aux = 0;
@@ -64,6 +69,13 @@ public class Proyecto implements Serializable {
         return presupuesto - aux;
     }
     
+    /**
+     * Mete en la lista de asignaciónes, la asignacion que relaciona el
+     * proyecto con el empleado.
+     * 
+     * @param asignacion la asignación a meter en la lista
+     * @return true si pudo concretarse, false en otro caso.
+     */
     public boolean addAsignacion(Asignacion asignacion) {
         
         // comprobamos que la asignación corresponde a nuestro proyecto
@@ -73,10 +85,20 @@ public class Proyecto implements Serializable {
         else return false;
     }
     
+    /**
+     * Quita de la lista de asignaciónes, la asignacion que relaciona el
+     * proyecto con el empleado.
+     * 
+     * Éste metodo NO elimina la asignación de la lista correspondiente
+     * del empleado (solo su propia lista).
+     * 
+     * @param asignacion la asignación a eliminar de la lista
+     * @return true si pudo concretarse, false en otro caso.
+     */
     public boolean removeAsignacion(Asignacion asignacion) {
         
         return asignaciones.remove(asignacion);
-    }  
+    }
     
     //</editor-fold>
 

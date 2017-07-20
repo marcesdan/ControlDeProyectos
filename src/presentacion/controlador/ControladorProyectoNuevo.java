@@ -42,6 +42,7 @@ public class ControladorProyectoNuevo extends ControladorHijo {
             if (camposValidos) {
                 // Persistimos en la BD el proyecto
                 proyectoDao.create(proyecto);
+                finalizarOperacion();
             }
 
         } else { // De lo contrario se requiere modificar un registro (update)
@@ -54,6 +55,7 @@ public class ControladorProyectoNuevo extends ControladorHijo {
             if (camposValidos) {
                 // Se modifica (persiste) en la BD el proyecto (Update)
                 proyectoDao.update(proyecto);
+                finalizarOperacion();
              }
         }
     }

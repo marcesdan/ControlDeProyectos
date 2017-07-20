@@ -284,7 +284,7 @@ public class PanelEmpleadoNuevo
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
- 
+              
         controlador.guardarRegistro(crearInfoEmpleado()
                 .withId(id)
                 .withApellido(txtApellido.getText())
@@ -297,6 +297,7 @@ public class PanelEmpleadoNuevo
                 .withCalle(txtCalle.getText())
                 .withAltura(txtDepto.getText())
                 .withBarrio(txtBarrio.getText()));
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
     //</editor-fold>  
 

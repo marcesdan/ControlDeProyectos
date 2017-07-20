@@ -14,6 +14,9 @@ import presentacion.factory.EmpleadoFactory;
 import presentacion.vista.Main;
 import presentacion.modelo.ATableModel;
 import dao.EmpleadoDao;
+import dominio.Asignacion;
+import dominio.Proyecto;
+import java.util.Iterator;
 
 /**
  *
@@ -84,11 +87,32 @@ public class ControladorEmpleado extends ControladorPadre {
                 Long id = model.getId(fila);
                 String nombre = (String) model.getValueAt(fila, 1);
                 
-                // Buscamos y eliminamos.
-                EmpleadoDao dao = new DaoFactory().crearEmpleadoDao();
-                dao.delete(dao.read(id));
+                // Buscamos al empleado
+                EmpleadoDao empleadoDao = new DaoFactory().crearEmpleadoDao();
+                Empleado empleado = empleadoDao.read(id);
+                // Se elimina el empleado de la BD
+                empleadoDao.delete(empleado);
                 
-                // Se actializa el listado en pantalla.
+                /**
+                 * Además de eliminar al empleado, hay que eliminar con él 
+                 * todas sus asignaciones. Con lo cual es necesario actualizar 
+                 * la lista de cada uno de los proyectos en los cuales 
+                 * participaba el empleado.
+                 */
+                Iterator<Asignacion> i = empleado.getAsignaciones().iterator();
+                while (i.hasNext()) {
+                    Asignacion asignacion = i.next();
+                    // Obtenemos el proyecto
+                    Proyecto proyecto = asignacion.getProyecto();
+                    // Eliminamos la asignación del empleado a borrar
+                    proyecto.removeAsignacion(asignacion);
+                    // Actualizamos
+                    new DaoFactory().crearProyectoDao().update(proyecto);
+                    // Y se elimina el elemento de la lista
+                    i.remove();
+                }
+                
+                // Se actualiza el listado en pantalla.
                 vistaPadre.actualizarListado();
                 vistaPadre.mostrarMensaje("El empleado "+nombre+""
                         + " fue borrado exitosamente");

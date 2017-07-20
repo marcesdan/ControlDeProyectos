@@ -88,6 +88,16 @@ public class ControladorAsignacionNueva extends ControladorHijo {
                             info.getPago(),
                             asignacion.getPago() ));
             
+            /** En la modificación no podemos modificar ni el empleado ni el
+             * proyecto (en ese caso habría que borrar la asignación completa.
+             */
+            if (!esModificacion) {
+                // Un empleado no puede estar asignado más de una vez al mismo proyecto
+                validarAsignacion(
+                    (Empleado) info.getEmpleado(), 
+                    (Proyecto) info.getProyecto());
+            }
+            
             camposValidos = true;
             
         } catch (IllegalArgumentException ex) {
@@ -116,54 +126,63 @@ public class ControladorAsignacionNueva extends ControladorHijo {
     //<editor-fold defaultstate="collapsed" desc="validación">
     private Integer validarHoras(String value) throws IllegalArgumentException {
 
-        // Es opcional...
-        if (!isNull(value)) {
+        // Verificamos que sea un número
+        checkArgument(isNumeric(value),
+                "El campo horas debe ser un número válido");
 
-            // Verificamos que sea un número
-            checkArgument(isNumeric(value),
-                    "El campo horas debe ser un número válido");
-
-            return Integer.parseInt(value);
-        } // Ausencia del atributo
-        else {
-            return null;
-        }
+        return Integer.parseInt(value);
     }
 
     private Integer validarPago(Proyecto proyecto, String value, Integer pagoAnterior) 
             throws IllegalArgumentException {
-
-        // Es opcional...
-        if (!isNull(value)) {
         
-            // Verificamos que sea un número
-            checkArgument(isNumeric(value),
-                    "El campo horas debe ser un número válido");
+        // Verificamos que sea un número
+        checkArgument(isNumeric(value),
+                "El campo horas debe ser un número válido");
 
-            Integer nuevoPago = Integer.parseInt(value);
-            
-            if (!esModificacion) { // Si la operación es un alta
-                // Verificamos que sea suficiente el presupuesto 
-                checkArgument(proyecto.presupuestoSuficiente(nuevoPago),
-                    "No hay presupuesto disponible para pagarle al empleado");
-            }
-             
-            /** Pero si es una modificación y se está modificando el pago tal que
-             * el nuevo pago es mayor que el pago anterior, se debe determinar 
-             * si es suficiente el presupuesto calculando la diferencia
-             * entre el pago que tenía antes con el nuevo pago por validar
-             */ 
-            else if (nuevoPago > pagoAnterior) { // Si son distintos.  
-                checkArgument(
-                        proyecto.presupuestoSuficiente(nuevoPago - pagoAnterior),
-                        "No hay presupuesto disponible para pagarle al empleado");
-            }
-            
-            return nuevoPago;
+        Integer nuevoPago = Integer.parseInt(value);
+
+        if (!esModificacion) { // Si la operación es un alta
+            // Verificamos que sea suficiente el presupuesto 
+            checkArgument(proyecto.presupuestoSuficiente(nuevoPago),
+                "No hay presupuesto disponible para pagarle al empleado");
         }
-        
-        else return null;
+
+        /** Pero si es una modificación y se está modificando el pago tal que
+         * el nuevo pago es mayor que el pago anterior, se debe determinar 
+         * si es suficiente el presupuesto calculando la diferencia
+         * entre el pago que tenía antes con el nuevo pago por validar
+         */ 
+        else if (nuevoPago > pagoAnterior) { // Si son distintos.  
+            checkArgument(
+                    proyecto.presupuestoSuficiente(nuevoPago - pagoAnterior),
+                    "No hay presupuesto disponible para aumentarle al empleado");
+        }
+
+        return nuevoPago;
     }
-//</editor-fold>
+    
+    /**
+     * Valida una restricción del dominio, la cual impide que un empleado esté
+     * asignado más de una vez al mismo proyecto.
+     * 
+     * @param empleado al que se requiere asignar
+     * @param proyecto al que se requiere asignar
+     * @throws IllegalArgumentException si ya se ecuentra asignado.
+     */
+    private void validarAsignacion(Empleado empleado, Proyecto proyecto) 
+            throws IllegalArgumentException {
+        
+        /** Prefiero recorrer la lista del empleado (debería tener menos
+         * elementos que la lista del proyecto...)
+         */
+        for (Asignacion asignacion : empleado.getAsignaciones()) {
+            
+            // Si son iguales se lanza la excepción.
+            checkArgument(!asignacion.getProyecto().equals(proyecto),
+                    "El empleado ya se encuentra asignado a ese proyecto");
+        }
+    }
+    //</editor-fold>
 
 }

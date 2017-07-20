@@ -42,9 +42,11 @@ public class PanelAsignacionNueva
         /* Le pasamos el botón que estará habilitado solo si dichos
         campos no estan vacíos */
         validador.setBoton(btnGuardar);
-
         validador.setFlag(false);
-
+        
+        txtEmpleado.setEditable(false);
+        txtPresupuesto.setEditable(false);
+        
         /* Para actuar en respuesta a los cambios de función
             * en el ProyectoComboBoxModel*/
         this.comboBoxProyecto.addItemListener(new ItemListener() {
@@ -237,6 +239,7 @@ public class PanelAsignacionNueva
         txtPresupuesto.setText(info.getPresupuestoDisponible());
         txtHoras.setText(info.getHoras());
         txtPuesto.setText(info.getPuesto());
+        txtPresupuesto.setText(info.getPresupuestoDisponible());
         comboBoxProyecto.getModel().setSelectedItem(info.getProyecto());
 
         
@@ -246,8 +249,6 @@ public class PanelAsignacionNueva
             // No se utiliza el comboBox, por ende solo importan los textFields.
             validador.setFlag(true);  
             comboBoxProyecto.setEnabled(false);
-            txtEmpleado.setEditable(false);
-            txtPresupuesto.setEnabled(false);
         }
     }
     

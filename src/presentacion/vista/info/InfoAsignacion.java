@@ -7,9 +7,6 @@
  */
 package presentacion.vista.info;
 
-import static com.google.common.base.Strings.emptyToNull;
-import static java.util.Objects.isNull;
-
 /**
  * Clase utilizada para implementar un "Parameter Object Refactoring".
  * Sirve de intermediaria entre las clases de dominio y las vistas (y los
@@ -83,58 +80,46 @@ public class InfoAsignacion extends Info {
     }
     
     /**
-     * Metodo sobrecargado para setear el objeto de dominio
-     * @param pago 
+     * Metodo sobrecargado para setear el objeto de dominio. Si pago
+     * es una cadena vacía, se setea pago con la cadena "0"
+     * @param pago atributo opcional en la BD
      * @return this (fluent interface).
      */
     public InfoAsignacion withPago(String pago) {
-        this.pago = emptyToNull(pago);
+        this.pago = emptyToCero(pago);
         return this;
     }
     
     /**
-     * Metodo sobrecargado para setear la vista.
-     * @param pago atributo opcional y por tanto "nullable".
+     * Metodo sobrecargado para setear la vista. Si pago es 0, se setea
+     * en el campo de texto una cadena vacía (no 0).
+     * @param pago atributo opcional.
      * @return this (fluent interface).
      */
     public InfoAsignacion withPago(Integer pago) {
-        
-        if (isNull(pago)) this.pago = null;
-        
-        /**Si era null hubiese lanzado una excepción.
-         * Sin embargo, el atributo es opcional y por tanto es probable
-         * que el mismo sea nulo. En ese caso la vista mostrara el campo vacío.
-         */
-        else this.pago = pago.toString();
-        
+        this.pago = ceroToEmpty(pago);
         return this;
     }
 
     /**
-     * Metodo sobrecargado para setear el objeto de dominio
+     * Metodo sobrecargado para setear el objeto de dominio. Si pago
+     * es una cadena vacía, se setea pago con la cadena "0".
      * @param horas 
      * @return this (fluent interface).
      */
     public InfoAsignacion withHoras(String horas) {
-        this.horas = emptyToNull(horas);
+        this.horas = emptyToCero(horas);
         return this;
     }
     
     /**
-     * Metodo sobrecargado para setear la vista.
-     * @param value atributo opcional y por tanto "nullable".
+     * Metodo sobrecargado para setear la vista. Si value es 0, se setea
+     * en el campo de texto una cadena vacía (no 0).
+     * @param value atributo opcional en la BD
      * @return this (fluent interface).
      */
     public InfoAsignacion withHoras(Integer value) {
-        
-        if (isNull(value)) this.horas = null;
-        
-        /**Si era null hubiese lanzado una excepción.
-         * Sin embargo, el atributo es opcional y por tanto es probable
-         * que el mismo sea nulo. En ese caso la vista mostrara el campo vacío.
-         */
-        else this.horas = value.toString();
-        
+        this.horas = ceroToEmpty(value);
         return this;
     }
 }
